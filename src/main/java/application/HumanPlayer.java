@@ -1,7 +1,7 @@
 package application;
 
 public class HumanPlayer extends Player{
-    private final IOManager io;
+    private IOManager io;
 
     public HumanPlayer(String name, IOManager io) {
         super(name);
