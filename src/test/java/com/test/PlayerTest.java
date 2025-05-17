@@ -46,5 +46,12 @@ public class PlayerTest
                 () -> new HumanPlayer("ThisIsATestPlayerName", io));
     }
 
+    @DisplayName("Test player name with whitespaces")
+    @Test
+    void testPlayerNameWhiteSpaces() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new HumanPlayer("This Is Invalid!",io));
+    }
+
 
 }

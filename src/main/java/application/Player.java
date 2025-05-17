@@ -50,6 +50,9 @@ public abstract class Player {
         if (name.length() > 10)
             throw new IllegalArgumentException("Name length must not exceed 10 characters");
 
+        if (name.contains(".*\\s+.*"))
+            throw new IllegalArgumentException("Name must not contain whitespaces");
+
         return name;
     }
 

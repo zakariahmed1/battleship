@@ -21,7 +21,6 @@ public class BotPlayer extends Player
     public void chooseFleet()
     {
         //creates the ships
-        ;
     }
 
     @Override
