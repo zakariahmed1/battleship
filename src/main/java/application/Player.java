@@ -27,9 +27,9 @@ public abstract class Player {
     public abstract Cell getAttack(Board enemyBoard);
 
     /**
-     * @return a list of Ships that form the fleet of the player
+     * Sets up the initial fleet for this player and adds it to the board
      */
-    public abstract List<Ship> chooseFleet();
+    public abstract void chooseFleet();
 
 
     @Override
@@ -40,7 +40,7 @@ public abstract class Player {
                 '}';
     }
 
-    
+
     private String getValidName(String name)
     {
         if (name == null)

@@ -17,9 +17,9 @@ public class HumanPlayer extends Player{
     }
 
     @Override
-    public List<Ship> chooseFleet()
+    public void chooseFleet()
     {
-        return null;
+        ;
     }
 
     @Override

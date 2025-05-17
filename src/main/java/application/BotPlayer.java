@@ -19,9 +19,9 @@ public class BotPlayer extends Player
     }
 
     @Override
-    public List<Ship> chooseFleet()
+    public void chooseFleet()
     {
-        return null;
+        ;
     }
 
     @Override
