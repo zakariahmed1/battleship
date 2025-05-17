@@ -50,7 +50,7 @@ public class PlayerTest
     @Test
     void testPlayerNameWhiteSpaces() {
         assertThrows(IllegalArgumentException.class,
-                () -> new HumanPlayer("This Is Invalid!",io));
+                () -> new HumanPlayer("In v a lid",io));
     }
 
 
