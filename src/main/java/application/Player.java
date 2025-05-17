@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Optional;
+
 public abstract class Player {
 
     protected final String name;
@@ -29,6 +31,14 @@ public abstract class Player {
     public boolean hasLost() {
         return false;
     }
+
+    public Board getBoard() {return myBoard;};
+
+    public Optional<Ship> defend(Cell cell) {
+        //return board.receiveShot(cell);
+    }
+
+
 
     @Override
     public String toString()
