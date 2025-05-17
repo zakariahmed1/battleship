@@ -12,17 +12,9 @@ public abstract class Player {
         myBoard = new Board(); //initializes empty board
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public boolean hasLost() {
-        return false;
-    }
-
     /**
      * @param enemyBoard the Board of the enemy
-     * @return a Cell that contains the coordinates of the attack
+     * @return the Cell that contains the coordinates of the attack
      */
     public abstract Cell getAttack(Board enemyBoard);
 
@@ -32,6 +24,14 @@ public abstract class Player {
     public abstract void chooseFleet();
 
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean hasLost() {
+        return false;
+    }
+
     @Override
     public String toString()
     {
@@ -39,7 +39,6 @@ public abstract class Player {
                 "name='" + name + '\'' +
                 '}';
     }
-
 
     private String getValidName(String name)
     {

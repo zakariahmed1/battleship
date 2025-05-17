@@ -15,12 +15,14 @@ public class BotPlayer extends Player
     @Override
     public Cell getAttack(Board enemyBoard)
     {
+        // create an attack based on the enemyBoard
         return null;
     }
 
     @Override
     public void chooseFleet()
     {
+        //creates the ships
         ;
     }
 
