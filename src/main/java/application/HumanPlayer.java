@@ -1,7 +1,5 @@
 package application;
 
-import java.util.List;
-
 public class HumanPlayer extends Player{
     private final IOManager io;
 
