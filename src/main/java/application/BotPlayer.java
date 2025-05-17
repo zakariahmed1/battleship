@@ -13,13 +13,13 @@ public class BotPlayer extends Player
     }
 
     @Override
-    public Cell getAttack()
+    public Cell getAttack(Board enemyBoard)
     {
         return null;
     }
 
     @Override
-    public List<Ship> getFleet()
+    public List<Ship> chooseFleet()
     {
         return null;
     }

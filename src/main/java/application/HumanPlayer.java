@@ -3,19 +3,21 @@ package application;
 import java.util.List;
 
 public class HumanPlayer extends Player{
+    private final IOManager io;
 
-    public HumanPlayer(String name) {
+    public HumanPlayer(String name, IOManager io) {
         super(name);
+        this.io = io;
     }
 
     @Override
-    public Cell getAttack()
+    public Cell getAttack(Board enemyBoard)
     {
         return null;
     }
 
     @Override
-    public List<Ship> getFleet()
+    public List<Ship> chooseFleet()
     {
         return null;
     }

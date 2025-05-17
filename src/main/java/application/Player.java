@@ -20,10 +20,17 @@ public abstract class Player {
         return false;
     }
 
+    /**
+     * @param enemyBoard the Board of the enemy
+     * @return a Cell that contains the coordinates of the attack
+     */
+    public abstract Cell getAttack(Board enemyBoard);
 
-    public abstract Cell getAttack();
+    /**
+     * @return a list of Ships that form the fleet of the player
+     */
+    public abstract List<Ship> chooseFleet();
 
-    public abstract List<Ship> getFleet();
 
     @Override
     public String toString()
@@ -33,6 +40,7 @@ public abstract class Player {
                 '}';
     }
 
+    
     private String getValidName(String name)
     {
         if (name == null)
