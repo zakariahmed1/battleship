@@ -20,7 +20,6 @@ public class HumanPlayer extends Player{
     public void chooseFleet()
     {
         //ask the player for the ships
-        ;
     }
 
     @Override
