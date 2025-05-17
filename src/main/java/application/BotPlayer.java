@@ -2,9 +2,13 @@ package application;
 
 import java.util.List;
 
-public class HumanPlayer extends Player{
+public class BotPlayer extends Player
+{
+    public BotPlayer() {
+        super("Bot");
+    }
 
-    public HumanPlayer(String name) {
+    public BotPlayer(String name) {
         super(name);
     }
 
