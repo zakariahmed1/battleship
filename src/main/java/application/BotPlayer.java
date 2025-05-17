@@ -1,31 +1,32 @@
 package application;
 
-public class HumanPlayer extends Player{
-    private IOManager io;
+public class BotPlayer extends Player
+{
+    public BotPlayer() {
+        super("Bot");
+    }
 
-    public HumanPlayer(String name, IOManager io) {
+    public BotPlayer(String name) {
         super(name);
-        this.io = io;
     }
 
     @Override
     public Cell getAttack(Board enemyBoard)
     {
-        // ask the player for coordinates
+        // create an attack based on the enemyBoard
         return null;
     }
-
 
     @Override
     public void chooseFleet()
     {
-        //ask the player for the ships
+        //creates the ships
     }
 
     @Override
     public String toString()
     {
-        return "HumanPlayer{" +
+        return "BotPlayer{" +
                 "name='" + name + '\'' +
                 '}';
     }
