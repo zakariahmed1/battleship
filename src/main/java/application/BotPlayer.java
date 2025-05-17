@@ -10,6 +10,7 @@ public class BotPlayer extends Player
         super(name);
     }
 
+
     @Override
     public Cell getAttack(Board enemyBoard)
     {

@@ -2,6 +2,7 @@ package application;
 
 import java.util.Optional;
 
+
 public abstract class Player {
 
     protected final String name;
@@ -36,6 +37,7 @@ public abstract class Player {
 
     public Optional<Ship> defend(Cell cell) {
         //return board.receiveShot(cell);
+        return null;
     }
 
 
