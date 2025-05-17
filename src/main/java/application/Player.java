@@ -20,10 +20,18 @@ public abstract class Player {
         return false;
     }
 
+
     public abstract Cell getAttack();
 
     public abstract List<Ship> getFleet();
 
+    @Override
+    public String toString()
+    {
+        return "Player{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     private String getValidName(String name)
     {
