@@ -1,35 +1,38 @@
 package application;
 
-public class BotPlayer extends Player
-{
+import java.util.Random;
+
+public class BotPlayer extends Player {
     public BotPlayer() {
-        super("Bot");
+        super(generateName());
     }
 
     public BotPlayer(String name) {
         super(name);
     }
 
-
     @Override
-    public Cell getAttack(Board enemyBoard)
-    {
+    public Cell getAttack(Board enemyBoard) {
         // create an attack based on the enemyBoard
         return null;
     }
 
     @Override
-    public void chooseFleet()
-    {
-        //creates the ships
+    public void chooseFleet() {
+        // creates the ships
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "BotPlayer{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public static String generateName() {
+        String[] names = { "Jeff", "Admiral Byte", "Captain Motherboard", "Commander Enum", "Lieutenant Maven" };
+        Random random = new Random();
+        return names[random.nextInt(names.length)];
     }
 
 }
