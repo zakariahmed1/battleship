@@ -2,7 +2,12 @@
 /shelf/
 /workspace.xml
 /target/
+.classpath
+.project
+.settings/
 .idea/
+*.iml
+.vscode/
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
