@@ -10,7 +10,7 @@ public abstract class Player {
 
     public Player(String name) {
         this.name = getValidName(name);
-        myBoard = new Board(); //initializes empty board
+        myBoard = new Board(10); //initializes empty board
     }
 
     /**
@@ -29,8 +29,9 @@ public abstract class Player {
         return name;
     }
 
+
     public boolean hasLost() {
-        return false;
+        return myBoard.isAllshipsunk();
     }
 
     public Board getBoard() {return myBoard;};

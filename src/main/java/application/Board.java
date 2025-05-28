@@ -18,14 +18,15 @@ public class Board {
         }
     }
 
-    public void placeShip(Ship ship) {
+    public boolean placeShip(Ship ship) {
         if (!isValidPlacement(ship)) {
             System.out.println("Invalid ship placement");
-            return;
+            return false;
         }
 
         if (ship.getSize() > 3 || ship.getSize() <= 0) {
             System.out.println("error size of the ship is too large or too small ");
+            return false;
         } else {
             coordinatesShip.addAll(ship.getCoordinates());
 
@@ -35,6 +36,7 @@ public class Board {
             }
             ships.add(ship);  // Add the ship to the list of ships on the board
         }
+        return true;
     }
 
     // Remove all eliminated ships from the board

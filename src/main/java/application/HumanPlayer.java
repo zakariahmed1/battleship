@@ -1,5 +1,7 @@
 package application;
 
+import java.util.List;
+
 public class HumanPlayer extends Player{
     private IOManager io;
 
@@ -20,7 +22,20 @@ public class HumanPlayer extends Player{
     @Override
     public void chooseFleet()
     {
+        //todo LOOP until all ships placed
+        //todo should we count here, or let the board decide?
         //ask the player for the ships
+        Ship ship = io.inputShip(myBoard.VisualizeBoard());
+        List<Cell> coordinates = io.inputShipPlacementCoordinates();
+        try {
+            //let the ship and board check if a ship of this type and coordinates can be added to the board.
+            ship.setCoordinates(coordinates);
+            myBoard.placeShip(ship); //todo check if true?
+            //or maybe myBoard.isValidPlacement();
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
