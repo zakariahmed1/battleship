@@ -72,6 +72,7 @@ public class IOManager {
 
     /**
      * Lets the player choose a ship from all the possible supported ships.
+     *
      * @param board the 2D string representation of the board.
      * @return the chosen ship instance.
      */
@@ -87,11 +88,7 @@ public class IOManager {
 
         do {
             try {
-                int shipId = Integer.parseInt(scanner.nextLine());
-                ship =  ShipBuilder.create(shipId);
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Pleaser enter an integer!");
+                ship = InputParser.parseShip(scanner.nextLine());
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -104,18 +101,19 @@ public class IOManager {
 
     /**
      * Draws the board on the terminal
+     *
      * @param board the 2D string representation of a board.
      */
     public void drawBoard(String[][] board) {
 
         System.out.printf("%-6s", "");
-        IntStream.range(1,board[0].length+1).forEach(num -> System.out.printf("%-3d",num));
+        IntStream.range(0,board[0].length).forEach(num -> System.out.printf("%-3d",num));
         System.out.println();
         System.out.printf("%-6s", "");
-        IntStream.range(1,board[0].length+1).forEach(num -> System.out.printf("%-3s","__"));
+        IntStream.range(0,board[0].length).forEach(num -> System.out.printf("%-3s","__"));
 
         System.out.println();
-        int counter = 1;
+        int counter = 0;
         for (String[] row : board) {
             System.out.printf("%-3d%-3s",counter, "|");
             Arrays.stream(row).forEach(sym -> System.out.printf("%-3s", sym));
@@ -125,81 +123,29 @@ public class IOManager {
     }
 
     /**
-     * Asks a human player for the coordinates of a ship, as long until he enters valid formatted coordinates, where the
-     * size of the ship does not exceen the maximum possible ship size, in the following format:
+     * Prompts a human player to enter ship coordinates until a valid input is provided.
+     * Delegates parsing and validation to InputParser:parseCoordinates()
      *
-     * For a single cell: x,y
-     * For a range of cells: x1,y1-x2,y2
+     * Accepted formats:
+     * Single cell: x,y
+     * Range of cells: x1,y1-x2,y2
      *
-     * @return a list of cells corrspnding to the coordinates (or range).
+     * @return a list of cells correspnding to the coordinates (or range).
      */
     public List<Cell> inputShipPlacementCoordinates() {
         System.out.println("Enter coordinates in the format x,y or x,y-x,y: ");
         List<Cell> cells = null;
         do {
-            String[] fromTo = scanner.nextLine().split("-");
-            if (fromTo.length <= 2) {
-                int x1, y1, x2, y2;
-                try {
-                    x1 = parseXCoordinate(fromTo[0]);
-                    y1 = parseYCoordinate(fromTo[0]);
-                    if (fromTo.length == 2) {
-                        x2 = parseXCoordinate(fromTo[1]);
-                        y2 = parseYCoordinate(fromTo[2]);
-                    }
-                    else {
-                        x2 = x1;
-                        y2 = y1;
-                    }
-                    cells = getCellsFromRange(x1,y1,x2,y2);
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Please enter valid coordinates in the format x1,y1 or x1,y1-x2,y2 for a range!");
-                }
-                catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
+            try
+            {
+                cells = InputParser.parseCoordinates(scanner.nextLine());
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage()+ " Try again!");;
             }
         } while (cells == null);
+
         return cells;
     }
-
-    /*
-     * parses the x coordinate out of the following format: x,y
-     */
-    private int parseXCoordinate(String coord) throws NumberFormatException {
-        return Integer.parseInt(coord.split(",")[0]);
-    }
-
-    /*
-     * parses the y coordinate out of the following format: x,y
-     */
-    private int parseYCoordinate(String coord) {
-        return Integer.parseInt(coord.split(",")[1]);
-    }
-
-    /**
-     * Creates a List of cells out of the given coordinate range
-     * @param x1 and y1 are the starting point, x2 and y2 the end of the range
-     * @return a List of Cells created from the range.
-     */
-    public List<Cell> getCellsFromRange(int x1, int y1, int x2, int y2) {
-        int deltaX = x2==x1 ? 0 : ((x2 < x1) ? -1 : 1) ;
-        int deltaY = y2==y1 ? 0 : ((y2 < y1) ? -1 : 1);
-
-        if (Integer.max(Math.abs(x2-x1),Math.abs(y2-y1)) > ShipBuilder.getMaxSupportedShipSize())
-            throw new IllegalArgumentException("Range too high!");
-
-        List<Cell> range = new ArrayList<>();
-
-        while (x1 != x2 || y1 != y2) {
-            range.add(new Cell(x1,y1));
-            x1 += deltaX;
-            y1 += deltaY;
-        }
-        range.add(new Cell(x1,y1));
-        return range;
-    }
-
 
 }

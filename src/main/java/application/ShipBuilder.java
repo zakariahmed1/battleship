@@ -17,13 +17,13 @@ public class ShipBuilder
 
     /**
      * Creates a ship instance out of an id
-     * @param id the id of the ship, corresponding to our Supplier-index, with an offset of +1
-     * @return the ship instance where the (id-1) corresponds to our supplier index
+     * @param id the id of the ship, corresponding to our Supplier-index
+     * @return the ship instance where the id corresponds to our supplier index
      */
     public static Ship create(int id) {
-        if (id < 1 || id > possibleShips.length)
-            throw new IllegalArgumentException("invalid ship id selection!");
-        return possibleShips[id-1].get();
+        if (id < 0 || id >= possibleShips.length)
+            throw new IllegalArgumentException("Invalid ship id selection!");
+        return possibleShips[id].get();
     }
 
     /**
