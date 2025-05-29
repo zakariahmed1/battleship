@@ -105,4 +105,11 @@ public abstract class Player {
         return myBoard.attackHandling(coordinates.x, coordinates.y); //according to current board logic
     }
 
+    /**
+     * @return the players board instance
+     */
+    public Board getBoard() {
+        return myBoard;
+    }
+
 }
