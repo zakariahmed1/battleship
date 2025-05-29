@@ -14,7 +14,7 @@ public class HumanPlayer extends Player{
     @Override
     public Cell getAttack(Board enemyBoard)
     {
-        // ask the player for coordinates
+        //return io.inputAttack(enemyBoard.visualizeEnemyBoard()); //no validation done, because the handleAttack method in the board class performs already checks
         return null;
     }
 
@@ -35,11 +35,11 @@ public class HumanPlayer extends Player{
                     }
                 }
                 catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
+                    io.print(e.getMessage());
                 }
             }
             else {
-                System.out.println("Ship too large! You only have 6 cells!");
+                io.print("Ship too large! You only have 6 cells!");
             }
         }
     }

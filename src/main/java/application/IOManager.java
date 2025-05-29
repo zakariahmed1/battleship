@@ -124,7 +124,7 @@ public class IOManager {
 
     /**
      * Prompts a human player to enter ship coordinates until a valid input is provided.
-     * Delegates parsing and validation to InputParser:parseCoordinates()
+     * Delegates parsing and validation to InputParser.parseCoordinatesRange()
      *
      * Accepted formats:
      * Single cell: x,y
@@ -138,7 +138,7 @@ public class IOManager {
         do {
             try
             {
-                cells = InputParser.parseCoordinates(scanner.nextLine());
+                cells = InputParser.parseCoordinatesRange(scanner.nextLine());
             }
             catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage()+ " Try again!");;
@@ -146,6 +146,37 @@ public class IOManager {
         } while (cells == null);
 
         return cells;
+    }
+
+    /**
+     * Prompts a human player to input coordinates for an attack.
+     * Delegates parsing and validation to InputParser.parseCoordinates()
+     *
+     * @return the Cell to attack
+     */
+    public Cell inputAttack(String[][] enemyBoard) {
+        System.out.println("Current enemies board: ");
+        drawBoard(enemyBoard);
+        System.out.println("Enter the coordinates you want to attack: ");
+        Cell attack = null;
+        do {
+            try {
+                attack = InputParser.parseCoordinates(scanner.nextLine());
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+
+        } while (attack == null);
+        return attack;
+    }
+
+    /**
+     * Prints the given error message on the terminal
+     * @param error the error message
+     */
+    public void print(String error) {
+        System.out.println(error);
     }
 
 }

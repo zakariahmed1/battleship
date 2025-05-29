@@ -38,7 +38,7 @@ public class InputParser
      * - the input format is not correct
      * - the input coordinates (range) does not corrispond to the ship size
      */
-    public static List<Cell> parseCoordinates(String input)
+    public static List<Cell> parseCoordinatesRange(String input)
     {
         String[] fromTo = input.split("-");
         if (fromTo.length <= 2)
@@ -66,6 +66,17 @@ public class InputParser
             }
         }
         return null;
+    }
+
+    public static Cell parseCoordinates(String input) throws IllegalArgumentException {
+        try {
+            int x = parseXCoordinate(input);
+            int y = parseYCoordinate(input);
+            return new Cell(x,y);
+        }
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid coordintes!");
+        }
     }
 
 
@@ -106,7 +117,7 @@ public class InputParser
      * parses the y coordinate out of the following format: x,y
      */
 
-    private static int parseYCoordinate(String coord) {
+    private static int parseYCoordinate(String coord) throws NumberFormatException {
         return Integer.parseInt(coord.split(",")[1]);
     }
 

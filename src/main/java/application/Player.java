@@ -2,14 +2,13 @@ package application;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public abstract class Player {
 
     protected final String name;
     protected final Board myBoard;
-    protected final List<Ship> fleet;
+    protected final List<Ship> fleet; //ambiuous...already in board
     protected final int MAX_FLEET_CELLS = 6;
 
 
@@ -98,6 +97,12 @@ public abstract class Player {
      */
     public boolean canPlaceShip(Ship ship) {
         return ship.getSize()+getOccupiedCellsSize() <= MAX_FLEET_CELLS;
+    }
+
+    //according to
+    public boolean recordDefense(Cell coordinates) {
+        //todo maybe board could throw an exception if not valid...
+        return myBoard.attackHandling(coordinates.x, coordinates.y); //according to current board logic
     }
 
 }
