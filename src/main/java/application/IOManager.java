@@ -76,7 +76,7 @@ public class IOManager {
      * @param board the 2D string representation of the board.
      * @return the chosen ship instance.
      */
-    public Ship inputShip(String[][] board) {
+    public Ship inputShip(String[][] board) throws CommandException{
         System.out.println();
         System.out.println("Your current board: ");
         drawBoard(board);
@@ -131,8 +131,10 @@ public class IOManager {
      * Range of cells: x1,y1-x2,y2
      *
      * @return a list of cells correspnding to the coordinates (or range).
+     * @throws CommandException if the player entered a supported command
      */
-    public List<Cell> inputShipPlacementCoordinates() {
+    public List<Cell> inputShipPlacementCoordinates() throws CommandException {
+
         System.out.println("Enter coordinates in the format x,y or x,y-x,y: ");
         List<Cell> cells = null;
         do {
@@ -153,8 +155,9 @@ public class IOManager {
      * Delegates parsing and validation to InputParser.parseCoordinates()
      *
      * @return the Cell to attack
+     * @throws CommandException if the player entered a supported command
      */
-    public Cell inputAttack(String[][] enemyBoard) {
+    public Cell inputAttack(String[][] enemyBoard) throws CommandException{
         System.out.println("Current enemies board: ");
         drawBoard(enemyBoard);
         System.out.println("Enter the coordinates you want to attack: ");

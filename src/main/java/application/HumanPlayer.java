@@ -1,6 +1,5 @@
 package application;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HumanPlayer extends Player{
@@ -25,7 +24,7 @@ public class HumanPlayer extends Player{
         //TODO maybe better board checks adding
         while (!allShipsPlaced()) {
 
-            Ship ship = io.inputShip(myBoard.VisualizeBoard());
+            Ship ship = io.inputShip(myBoard.VisualizeBoard()); //does return a valid ship
             if (canPlaceShip(ship)) {
                 List<Cell> coordinates = io.inputShipPlacementCoordinates();
                 try {
