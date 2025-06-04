@@ -1,8 +1,10 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 //Manages input/outputs for the application
 public class IOManager {
@@ -65,6 +67,119 @@ public class IOManager {
         System.out.println("  * Small Ship (1 cell)");
         System.out.println("  * Medium Ship (2 cells)");
         System.out.println("  * Large Ship (3 cells)");
-        System.out.println(" * total -> 6 cells");
+        System.out.println("  * total -> 6 cells");
     }
+
+    /**
+     * Lets the player choose a ship from all the possible supported ships.
+     *
+     * @param board the 2D string representation of the board.
+     * @return the chosen ship instance.
+     */
+    public Ship inputShip(String[][] board) throws CommandException{
+        System.out.println();
+        System.out.println("Your current board: ");
+        drawBoard(board);
+        System.out.println();
+        System.out.println(ShipBuilder.getShipsDescription());
+        System.out.println("Enter your choice (for example 1): ");
+
+        Ship ship = null;
+
+        do {
+            try {
+                ship = InputParser.parseShip(scanner.nextLine());
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (ship == null);
+
+        return ship;
+    }
+
+
+    /**
+     * Draws the board on the terminal
+     *
+     * @param board the 2D string representation of a board.
+     */
+    public void drawBoard(String[][] board) {
+
+        System.out.printf("%-6s", "");
+        IntStream.range(0,board[0].length).forEach(num -> System.out.printf("%-3d",num));
+        System.out.println();
+        System.out.printf("%-6s", "");
+        IntStream.range(0,board[0].length).forEach(num -> System.out.printf("%-3s","__"));
+
+        System.out.println();
+        int counter = 0;
+        for (String[] row : board) {
+            System.out.printf("%-3d%-3s",counter, "|");
+            Arrays.stream(row).forEach(sym -> System.out.printf("%-3s", sym));
+            System.out.println();
+            counter++;
+        }
+    }
+
+    /**
+     * Prompts a human player to enter ship coordinates until a valid input is provided.
+     * Delegates parsing and validation to InputParser.parseCoordinatesRange()
+     *
+     * Accepted formats:
+     * Single cell: x,y
+     * Range of cells: x1,y1-x2,y2
+     *
+     * @return a list of cells correspnding to the coordinates (or range).
+     * @throws CommandException if the player entered a supported command
+     */
+    public List<Cell> inputShipPlacementCoordinates() throws CommandException {
+
+        System.out.println("Enter coordinates in the format x,y or x,y-x,y: ");
+        List<Cell> cells = null;
+        do {
+            try
+            {
+                cells = InputParser.parseCoordinatesRange(scanner.nextLine());
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage()+ " Try again!");;
+            }
+        } while (cells == null);
+
+        return cells;
+    }
+
+    /**
+     * Prompts a human player to input coordinates for an attack.
+     * Delegates parsing and validation to InputParser.parseCoordinates()
+     *
+     * @return the Cell to attack
+     * @throws CommandException if the player entered a supported command
+     */
+    public Cell inputAttack(String[][] enemyBoard) throws CommandException{
+        System.out.println("Current enemies board: ");
+        drawBoard(enemyBoard);
+        System.out.println("Enter the coordinates you want to attack: ");
+        Cell attack = null;
+        do {
+            try {
+                attack = InputParser.parseCoordinates(scanner.nextLine());
+            }
+            catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+
+        } while (attack == null);
+        return attack;
+    }
+
+    /**
+     * Prints the given error message on the terminal
+     * @param error the error message
+     */
+    public void print(String error) {
+        System.out.println(error);
+    }
+
 }

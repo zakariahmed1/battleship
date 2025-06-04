@@ -1,16 +1,21 @@
 package application;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public abstract class Player {
 
     protected final String name;
     protected final Board myBoard;
+    protected final List<Ship> fleet; //ambiuous...already in board
+    protected final int MAX_FLEET_CELLS = 6;
+
 
     public Player(String name) {
         this.name = getValidName(name);
-        myBoard = new Board(); //initializes empty board
+        myBoard = new Board(10); //initializes empty board
+        fleet = new ArrayList<>(); //empty fleet -> ambigous, but currently the board gives too less infos
     }
 
     /**
@@ -25,23 +30,23 @@ public abstract class Player {
     public abstract void chooseFleet();
 
 
+    /**
+     * @return the name of a player
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return true if this player has no more living ships, otherwise false.
+     */
     public boolean hasLost() {
-        return false;
+        return myBoard.isAllshipsunk();
     }
 
-    public Board getBoard() {return myBoard;};
-
-    public Optional<Ship> defend(Cell cell) {
-        //return board.receiveShot(cell);
-        return null;
-    }
-
-
-
+    /**
+     * @return the string representation of a player
+     */
     @Override
     public String toString()
     {
@@ -50,6 +55,7 @@ public abstract class Player {
                 '}';
     }
 
+    //checks if the player name meets certain requirements
     private String getValidName(String name)
     {
         if (name == null)
@@ -66,6 +72,44 @@ public abstract class Player {
             throw new IllegalArgumentException("Name must not contain whitespaces");
 
         return name;
+    }
+
+    /**
+     * @return true, if no more ships can be placed according to the maximum allowed size of cells, false otherwise.
+     */
+    public boolean allShipsPlaced() {
+        return getOccupiedCellsSize() == MAX_FLEET_CELLS;
+    }
+
+    /**
+     * @return the current amount of cells occupied by ships.
+     */
+    public int getOccupiedCellsSize() {
+        return fleet.stream().mapToInt(ship -> ship.getSize()).sum();
+    }
+
+    /**
+     * Checks whether the given ship can be placed on the board, without exceeding the limit for cells
+     * reserved for ships.
+     *
+     * @param ship the ship to be placed
+     * @return true if placing the ship stays within the allowed ship cell limit; false otherwise
+     */
+    public boolean canPlaceShip(Ship ship) {
+        return ship.getSize()+getOccupiedCellsSize() <= MAX_FLEET_CELLS;
+    }
+
+    //according to
+    public boolean recordDefense(Cell coordinates) {
+        //todo maybe board could throw an exception if not valid...
+        return myBoard.attackHandling(coordinates.x, coordinates.y); //according to current board logic
+    }
+
+    /**
+     * @return the players board instance
+     */
+    public Board getBoard() {
+        return myBoard;
     }
 
 }
