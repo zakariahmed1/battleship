@@ -17,11 +17,11 @@ public class Cell {
     }
 
     public void placeShip(Ship ship) {
-        this.ship = ship;
+        this.ship = ship; //assign a ship to the cell
     }
 
     public boolean hasShip() {
-        return ship != null;
+        return ship != null; //return null if there is no ship assigned to the cell
     }
 
     public boolean isAttacked() {

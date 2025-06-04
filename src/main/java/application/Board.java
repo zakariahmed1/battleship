@@ -11,9 +11,9 @@ public class Board {
 
     public Board(int size) {
         board = new Cell[size][size];
-        for (int i = 0; i < size; i++) {  // Fixed: changed <= to <
-            for (int j = 0; j < size; j++) {  // Fixed: changed <= to <
-                board[i][j] = new Cell(i, j);  // Initialize with coordinates
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                board[i][j] = new Cell(i, j);
             }
         }
     }
@@ -27,11 +27,11 @@ public class Board {
         if (ship.getSize() > 3 || ship.getSize() <= 0) {
             System.out.println("error size of the ship is too large or too small ");
         } else {
-            coordinatesShip.addAll(ship.getCoordinates());
+            coordinatesShip.addAll(ship.getCoordinates()); // put the ship coordinates in a l,ist
 
-            for (int i = 0; i < coordinatesShip.size(); i++) {  // Fixed: changed <= to <
-                Cell coordinatecell = coordinatesShip.get(i);
-                board[coordinatecell.x][coordinatecell.y].placeShip(ship);
+            for (int i = 0; i < coordinatesShip.size(); i++) { // l,oop through all the coordinates
+                Cell coordinatecell = coordinatesShip.get(i); // make an ob,ject of coorrdinateship and assign it each time the iterator
+                board[coordinatecell.x][coordinatecell.y].placeShip(ship); // place ship at the given coordinates
             }
             ships.add(ship);  // Add the ship to the list of ships on the board
         }
@@ -74,39 +74,62 @@ public class Board {
         }
         return visualization;
     }
+    public String [][] VisualizeEnemyBoard(){
+        String[][] visualization = new String[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][j].hasShip()) {
+                    if (board[i][j].isAttacked()) {
+                        visualization[i][j] = "X"; // Hit ship
+                    } else {
+                        visualization[i][j] = "."; // Ship
+                    }
+                } else {
+                    if (board[i][j].isAttacked()) {
+                        visualization[i][j] = "O"; // Miss
+                    } else {
+                        visualization[i][j] = "."; // Empty water
+                    }
+                }
+            }
+        }
+        return visualization;
+
+    }
 
     // Process an attack at given position
-    public boolean attackHandling(int x, int y) {
+    public String attackHandling(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             System.out.println("Invalid attack coordinates");
-            return false;
+       return "invalid coordinates";
         }
 
-        Cell cell = board[x][y];
-        if (cell.isAttacked()) {
+        Cell cell = board[x][y];  // make a cell with given coordinates
+        if (cell.isAttacked()) {  // check if  cell was already attacked
             System.out.println("This cell was already attacked");
-            return false;
+            return "cell already attacked";
         }
 
-        cell.attack();
-        if (cell.hasShip()) {
-            Ship ship = cell.getShip();
+        cell.attack(); //attack the cell at given coordinate
+        if (cell.hasShip()) {// check if there is a ship there
+            Ship ship = cell.getShip(); // if there is a ship at that cell make ship ob,j
             ship.registerHit(cell);
             System.out.println("Hit!");
             if (ship.isSunk()) {
                 System.out.println("Ship sunk!");
+                return "hit and sunk";
             }
-            return true;
+            return "hit";
         } else {
             System.out.println("Miss!");
-            return false;
+            return "miss";
         }
     }
 
     // Check if all ships on the board are sunk
     public boolean isAllshipsunk() {
-        for (Ship ship : ships) {
-            if (!ship.isSunk()) {
+        for (Ship ship : ships) { //iterate through the ships
+            if (!ship.isSunk()) { // if ship is not sunk return false
                 return false;
             }
         }
