@@ -100,7 +100,7 @@ public abstract class Player {
     }
 
     //according to
-    public boolean recordDefense(Cell coordinates) {
+    public String recordDefense(Cell coordinates) {
         //todo maybe board could throw an exception if not valid...
         return myBoard.attackHandling(coordinates.x, coordinates.y); //according to current board logic
     }

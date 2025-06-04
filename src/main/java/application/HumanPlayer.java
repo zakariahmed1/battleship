@@ -13,8 +13,7 @@ public class HumanPlayer extends Player{
     @Override
     public Cell getAttack(Board enemyBoard)
     {
-        //return io.inputAttack(enemyBoard.visualizeEnemyBoard()); //no validation done, because the handleAttack method in the board class performs already checks
-        return null;
+        return io.inputAttack(enemyBoard.VisualizeEnemyBoard()); //no validation done, because the handleAttack method in the board class performs already checks
     }
 
 
@@ -30,7 +29,7 @@ public class HumanPlayer extends Player{
                 try {
                     ship.setCoordinates(coordinates);
                     if (myBoard.placeShip(ship)) {
-                        fleet.add(ship);
+                        fleet.add(ship); //redundant until board adapts
                     }
                 }
                 catch (IllegalArgumentException e) {
