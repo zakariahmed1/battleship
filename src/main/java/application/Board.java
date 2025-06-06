@@ -32,7 +32,7 @@ public class Board {
 
             for (int i = 0; i < coordinatesShip.size(); i++) { // l,oop through all the coordinates
                 Cell coordinatecell = coordinatesShip.get(i); // make an ob,ject of coorrdinateship and assign it each time the iterator
-                board[coordinatecell.x][coordinatecell.y].placeShip(ship); // place ship at the given coordinates
+                board[coordinatecell.y][coordinatecell.x].placeShip(ship); // place ship at the given coordinates
             }
             ships.add(ship);  // Add the ship to the list of ships on the board
         }
@@ -47,7 +47,7 @@ public class Board {
             if (ship.isSunk()) {
                 // Remove the ship from all cells
                 for (Cell cell : ship.getCoordinates()) {
-                    board[cell.x][cell.y].ship = null;
+                    board[cell.y][cell.x].ship = null;
                 }
                 iterator.remove();
             }
@@ -150,7 +150,7 @@ public class Board {
             }
 
             // Check if cell already has a ship
-            if (board[x][y].hasShip()) {
+            if (board[y][x].hasShip()) {
                 return false;
             }
 
