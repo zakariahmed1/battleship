@@ -13,7 +13,7 @@ public class BotPlayer extends Player {
 
     @Override
     public Cell getAttack(Board enemyBoard) {
-        // create an attack based on the enemyBoard
+        // create an attack based on the enemyBoard current situation
         return null;
     }
 
