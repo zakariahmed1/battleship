@@ -1,8 +1,12 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BotPlayer extends Player {
+
+    private Random random = new Random();
     public BotPlayer() {
         super(generateName());
     }
@@ -18,8 +22,68 @@ public class BotPlayer extends Player {
     }
 
     @Override
-    public void chooseFleet() {
-        // creates the ships
+    public void chooseFleet() throws CommandException {
+        // creates the ships and placements
+        while (!isReady()){
+            Ship ship = randomShip(); // picks a random ship type
+
+            if (canPlaceShip(ship)) {
+                try {
+                    List<Cell> coordinates = generateRandomPlacement(ship.getSize());
+
+                    ship.setCoordinates(coordinates);
+                    addShip(ship);
+                }    catch(IllegalArgumentException e)  {
+
+                    //placement failed, try again
+                }
+            } else {
+                // ship too large
+                // skip and retry with another ship
+            }
+        }
+    }
+
+
+    //checks readiness and returns true only when the bot followed all the requirements
+    @Override
+    public boolean isReady() {
+        int occupied = getShips().stream()
+                .mapToInt(Ship::getSize)
+                .sum();
+        return occupied >= MAX_FLEET_CELLS;
+    }
+
+    //the name of the method speaks for itself
+    private List<Cell> generateRandomPlacement(int size) {
+        List<Cell> cells = new ArrayList<>();
+
+        boolean horizontal = random.nextBoolean();
+        int boardWidth = board.getWidth();
+        int boardHeight = board.getHeigth();
+
+        if (horizontal) {
+            int y = random.nextInt(boardHeight);
+            int x = random.nextInt(boardWidth - size +1);
+
+            for (int i = 0; i < size; i++) {
+                cells.add(new Cell(x + i, y));
+            }
+        }
+        return cells;
+    }
+
+    private Ship randomShip() {
+
+        //randomly pick a ship type
+        int type = random.nextInt(5);
+        switch (type) {
+            case 0: return new Carrier();
+            case 1: return new Battleship();
+            case 2: return new Cruiser();
+            case 3: return new Submarine();
+            default: return new Destroyer();
+        }
     }
 
     @Override
