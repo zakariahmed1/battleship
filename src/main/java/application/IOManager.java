@@ -49,14 +49,23 @@ public class IOManager {
     }
 
     // asks the user to input player names and returns a list of names
-    public List<String> inputPlayers() {
-        System.out.println(
+    public String inputPlayers(boolean isFirstPlayer) {
+        /*System.out.println(
                 "Let's start by setting up players names. If you wish to play against a bot type in only your name, if you are two players make sure the two names are separated by a comma.");
         String in = scanner.nextLine();
         return Arrays.stream(in.split(","))
                 .map(n -> n.trim())
                 .filter(n -> !n.isEmpty())
                 .toList();
+
+         */
+        if (isFirstPlayer) {
+            System.out.println("Enter first player name: ");
+        }
+        else {
+            System.out.println("Enter second player name or press enter for a bot type");
+        }
+        return scanner.nextLine();
     }
 
     // displays a message explaining rules to setup the fleet
@@ -160,10 +169,10 @@ public class IOManager {
     public Cell inputAttack(String[][] enemyBoard) throws CommandException{
         System.out.println("Current enemies board: ");
         drawBoard(enemyBoard);
-        System.out.println("Enter the coordinates you want to attack: ");
         Cell attack = null;
         do {
             try {
+                System.out.println("Enter the coordinates you want to attack: ");
                 attack = InputParser.parseCoordinates(scanner.nextLine());
             }
             catch (IllegalArgumentException e) {
