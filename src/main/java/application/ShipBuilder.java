@@ -27,6 +27,14 @@ public class ShipBuilder
     }
 
     /**
+     * counts how many ship type this game supports.
+     * @return the number of possible ship types
+     */
+    public int getNumberOfShipTypes() {
+        return possibleShips.length;
+    }
+
+    /**
      * @return a String description of the possible ships a player can choose with the possible size.
      */
     public static String getShipsDescription() {
