@@ -62,6 +62,8 @@ public class GameManager {
         Player currentPlayer = player1;
         while (winner == null) {
             winner = playTurn(currentPlayer);
+            //player change on console such that the other one does not see the board
+            io.waitForPlayerResponse(currentPlayer.getName()+ " press a key to let the other player play!");
             currentPlayer = getOpponent(currentPlayer);
             io.changePlayer(currentPlayer);
         }
@@ -71,11 +73,15 @@ public class GameManager {
     // sets up the fleet for the 2 players
     private void setupBoards() {
         io.setupFleetMessage();
-        //player1.chooseFleet();
         chooseFleet(player1);
+        io.drawBoard(player1.getBoard().VisualizeBoard());
+        //player change on console such that the other one does not see the board
+        io.waitForPlayerResponse(player1.getName()+ " press a key to let the other player play!");
         io.changePlayer(player2);
-        //player2.chooseFleet();
         chooseFleet(player2);
+        io.drawBoard(player2.getBoard().VisualizeBoard());
+        //player change on console such that the other one does not see the board
+        io.waitForPlayerResponse(player2.getName()+ " press a key to let the other player play!");
         io.changePlayer(player1);
     }
 
