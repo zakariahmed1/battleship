@@ -63,9 +63,12 @@ public class GameManager {
         while (winner == null) {
             winner = playTurn(currentPlayer);
             //player change on console such that the other one does not see the board
-            io.waitForPlayerResponse(currentPlayer.getName()+ " press a key to let the other player play!");
-            currentPlayer = getOpponent(currentPlayer);
-            io.changePlayer(currentPlayer);
+            if (winner == null)
+            {
+                io.waitForPlayerResponse(currentPlayer.getName() + " press a key to let the other player play!");
+                currentPlayer = getOpponent(currentPlayer);
+                io.changePlayer(currentPlayer);
+            }
         }
         io.announceWinner(winner);
     }
