@@ -59,8 +59,8 @@ public class BotPlayer extends Player {
         List<Cell> cells = new ArrayList<>();
 
         boolean horizontal = random.nextBoolean();
-        int boardWidth = board.getWidth();
-        int boardHeight = board.getHeigth();
+        int boardWidth = myBoard.getWidth();
+        int boardHeight = myBoard.getHeigth();
 
         if (horizontal) {
             int y = random.nextInt(boardHeight);

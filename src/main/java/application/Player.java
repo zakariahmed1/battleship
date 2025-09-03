@@ -11,7 +11,6 @@ public abstract class Player {
     protected final int MAX_FLEET_CELLS = 6;
     private int occupiedCells;
 
-    protected Board board;
     protected List<Ship> ships = new ArrayList<>();
 
 
