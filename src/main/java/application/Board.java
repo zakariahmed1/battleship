@@ -170,4 +170,12 @@ public class Board {
     public Cell[][] getBoard() {
         return board;
     }
+
+    public int getWidth() {
+        return 0;
+    }
+
+    public int getHeigth() {
+        return 0;
+    }
 }

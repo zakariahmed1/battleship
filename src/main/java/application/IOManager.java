@@ -33,8 +33,14 @@ public class IOManager {
     // clears the terminal and siplays a message with the name of the player
     // supposed to play next
     public void changePlayer(Player current) {
-        clearTerminal();
+        waitForPlayerResponse("Player "+current.getName()+", press a key to continue!");
         System.out.println(current.getName() + " it's your turn now!");
+    }
+
+    public void waitForPlayerResponse(String message) {
+        System.out.println(message);
+        scanner.nextLine();
+        clearTerminal();
     }
 
     // clears the terminal
@@ -49,20 +55,29 @@ public class IOManager {
     }
 
     // asks the user to input player names and returns a list of names
-    public List<String> inputPlayers() {
-        System.out.println(
+    public String inputPlayers(boolean isFirstPlayer) { //todo commandexcpeion
+        /*System.out.println(
                 "Let's start by setting up players names. If you wish to play against a bot type in only your name, if you are two players make sure the two names are separated by a comma.");
         String in = scanner.nextLine();
         return Arrays.stream(in.split(","))
                 .map(n -> n.trim())
                 .filter(n -> !n.isEmpty())
                 .toList();
+
+         */
+        if (isFirstPlayer) {
+            System.out.println("Enter first player name: ");
+        }
+        else {
+            System.out.println("Enter second player name or press enter for a bot type");
+        }
+        return scanner.nextLine();
     }
 
     // displays a message explaining rules to setup the fleet
     public void setupFleetMessage() {
         System.out.println("Perfect, now it's time to set up your fleet.");
-        System.out.println("Each player has a 6x7 grid to place their fleet and track enemy fire.");
+        System.out.println("Each player has a 9x9 grid to place their fleet and track enemy fire.");
         System.out.println("Build your fleet using up to 6 total cells. See the example below:");
         System.out.println("  * Small Ship (1 cell)");
         System.out.println("  * Medium Ship (2 cells)");
@@ -160,10 +175,10 @@ public class IOManager {
     public Cell inputAttack(String[][] enemyBoard) throws CommandException{
         System.out.println("Current enemies board: ");
         drawBoard(enemyBoard);
-        System.out.println("Enter the coordinates you want to attack: ");
         Cell attack = null;
         do {
             try {
+                System.out.println("Enter the coordinates you want to attack: ");
                 attack = InputParser.parseCoordinates(scanner.nextLine());
             }
             catch (IllegalArgumentException e) {

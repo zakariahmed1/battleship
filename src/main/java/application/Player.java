@@ -1,12 +1,18 @@
 package application;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Player {
 
     protected final String name;
     protected final Board myBoard;
     protected final int MAX_FLEET_CELLS = 6;
     private int occupiedCells;
+
+    protected Board board;
+    protected List<Ship> ships = new ArrayList<>();
 
 
     public Player(String name) {
@@ -77,6 +83,10 @@ public abstract class Player {
      */
     public boolean isReady() {
         return occupiedCells == MAX_FLEET_CELLS;
+    }
+
+    public List<Ship> getShips(){
+        return ships;
     }
 
     /*
