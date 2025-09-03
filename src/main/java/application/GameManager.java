@@ -1,43 +1,61 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
-//Controls the lifecycle of a game session
+/**
+ * The GameManager class manages the flow of a turn-based console game.
+ * It is repsonsible for:
+ *  - Handling player turns and switching between players,
+ *  - Executing actions such as attacks.
+ *  - Reacting to commands
+ *  - Checking whether the game has ended
+ */
 public class GameManager {
+
     private Player player1;
     private Player player2;
+    private Player currentPlayer;
     private final IOManager io;
+
+    private boolean gameOver;
 
     public GameManager() {
         io = new IOManager();
         io.introduceGame();
     }
 
-    // initializes the game by setting up Players
     public void initializeGame() {
-        /*List<String> playersName = new ArrayList<>(io.inputPlayers());
-        player1 = new HumanPlayer(playersName.get(0), io);
-        if (playersName.size() == 1) {// if only one name was in the input initialize one player as bot
-            player2 = new BotPlayer();
-        } else {
-            player2 = new HumanPlayer(playersName.get(1), io);
-        }
-        setupBoards();*/
-
-        player1 = getNewPlayer(false, true);
-        player2 = getNewPlayer(true, false);
+        player1 = getNewPlayer(false, true); //first player cannot be a bot
+        player2 = getNewPlayer(true, false); //second player can be a bot
+        currentPlayer = player1;
+        gameOver = false;
         setupBoards();
-
     }
 
+    // Game loop
+    public void startGame() {
+        while (!gameOver) {
+            playTurn();
+            if (!gameOver) {
+                //don't let the other player see the currents players board - clear the view first
+                io.waitForPlayerResponse(currentPlayer.getName() + " press a key to let the other player play!");
+                changePlayer();
+                io.changePlayer(currentPlayer);
+            }
+        }
+        io.announceWinner(currentPlayer);
+    }
+
+    /*
+     * Asks the player for his name and generates a new HumanPlayer instance.
+     * If the player enters an empty name, it will generate a BotPlayer instance.
+     * The first player must be a human player.
+     */
     private Player getNewPlayer(boolean botAllowed, boolean firstPlayer) {
         Player player = null;
 
         do {
             try
             {
-                String playerName = io.inputPlayers(firstPlayer);
+                String playerName = io.askPlayerName(firstPlayer);
                 if (playerName.isEmpty()) {
                     if (botAllowed)
                         player = new BotPlayer("Bot");
@@ -56,38 +74,22 @@ public class GameManager {
         return player;
     }
 
-    // manages the game loop
-    public void startGame() {
-        Player winner = null;
-        Player currentPlayer = player1;
-        while (winner == null) {
-            winner = playTurn(currentPlayer);
-            //player change on console such that the other one does not see the board
-            if (winner == null)
-            {
-                io.waitForPlayerResponse(currentPlayer.getName() + " press a key to let the other player play!");
-                currentPlayer = getOpponent(currentPlayer);
-                io.changePlayer(currentPlayer);
-            }
-        }
-        io.announceWinner(winner);
-    }
-
     // sets up the fleet for the 2 players
     private void setupBoards() {
         io.setupFleetMessage();
-        chooseFleet(player1);
-        io.drawBoard(player1.getBoard().VisualizeBoard());
-        //player change on console such that the other one does not see the board
-        io.waitForPlayerResponse(player1.getName()+ " press a key to let the other player play!");
-        io.changePlayer(player2);
-        chooseFleet(player2);
-        io.drawBoard(player2.getBoard().VisualizeBoard());
-        //player change on console such that the other one does not see the board
-        io.waitForPlayerResponse(player2.getName()+ " press a key to let the other player play!");
-        io.changePlayer(player1);
+        setupBoard(player1);
+        setupBoard(player2);
     }
 
+    private void setupBoard(Player player) {
+        chooseFleet(player);
+        io.drawBoard(player.getBoard().VisualizeBoard());
+        //Don't let the other player see the current players board
+        io.waitForPlayerResponse(player.getName()+ " press a key to let the other player play!");
+        io.changePlayer(getOpponent(player));
+    }
+
+    // let the player choose and place the fleet
     private void chooseFleet(Player player) {
         while (!player.isReady()) {
             try {
@@ -99,6 +101,7 @@ public class GameManager {
         }
     }
 
+    //Handle commands a player could enter
     private void handleCommand(Command command) {
         switch (command) {
             case EXIT -> {
@@ -109,12 +112,24 @@ public class GameManager {
                 io.print("Restarting game");
                 restartGame();
             }
+            case SHOWBOARDS -> {
+                io.print("Your current board: ");
+                io.drawBoard(currentPlayer.getBoard().VisualizeBoard());
+                io.print("Your enemy's board: ");
+                io.drawBoard(getOpponent(currentPlayer).getBoard().VisualizeEnemyBoard());
+            }
+            case HELP -> {
+                io.printHelp();
+            }
         }
     }
 
+    // resets the game state and restarts the game
     private void restartGame() {
         player1 = null;
         player2 = null;
+        currentPlayer = null;
+        gameOver = false;
         initializeGame();
         startGame();
     }
@@ -124,19 +139,25 @@ public class GameManager {
         return currentPlayer.equals(player1) ? player2 : player1;
     }
 
-    // handles a single turn, get shot coordinated and handles attack, finally it
-    // checks for a win condition
-    private Player playTurn(Player currentPlayer) {
-        Player enemyPlayer = getOpponent(currentPlayer);
-//        Cell shot = currentPlayer.getAttack(enemyPlayer.getBoard()); // this method should have no parameter, it asks the player to input
-                                                   // his shot coordinates and validates them
+    // change the current player to the other player
+    private void changePlayer() {
+        currentPlayer = getOpponent(currentPlayer);
+    }
+
+    /*
+     * Asks the player for an attacking cell, performs the attack on the defending player.
+     * If the defending player has lost, the game is over.
+     */
+    private void playTurn() {
 
         boolean validAttack = false;
+        Player enemyPlayer = getOpponent(currentPlayer);
+
         do {
             try
             {
                 Cell shot = currentPlayer.getAttack(enemyPlayer.getBoard());
-                handleAttack(currentPlayer, enemyPlayer, shot);
+                handleAttack(enemyPlayer, shot);
                 validAttack = true;
             }
             catch (IllegalArgumentException e) {
@@ -145,24 +166,22 @@ public class GameManager {
             catch (CommandException e) {
                 handleCommand(e.getCommand());
             }
-        }while (!validAttack);
-        //handleAttack(currentPlayer, enemyPlayer, shot);
-        if (enemyPlayer.hasLost()) {
-            return currentPlayer;
-        }
-        return null;
+        } while (!validAttack);
+
+        checkGameOver(enemyPlayer);
     }
 
-    // handles the attack logic
-    private void handleAttack(Player attacker, Player defender, Cell coordinates) {
-        // Cell.Type shotResoult = defender.recordDefense(coordinates); updates the
-        // defender board and stores the returned shot resoult
-        // attacker.recordAttack(coordinates); updates the player board with the cells
-        // he has already attacked
-        // io.displayShot(shotResoult); displays the resoult of the shot
+    // stop the game if game over
+    private void checkGameOver(Player defender) {
+        if (defender.hasLost())
+            gameOver = true;
+    }
 
-        String attackResult = defender.recordDefense(coordinates);
+    // handles the attack
+    private void handleAttack(Player defender, Cell coordinates) {
+        String attackResult = defender.defend(coordinates);
 
+        //todo further reactions to attacks
         switch (attackResult) {
             case "invalid coordinates" -> { throw new IllegalArgumentException("Coordinates " +coordinates+ " are invalid! Try again!");} // throw exception
             case "cell already attacked" -> { throw new IllegalArgumentException("Coordinates "+coordinates+" already revealed! Try again!");} //throw exception

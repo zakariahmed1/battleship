@@ -111,9 +111,14 @@ public abstract class Player {
     }
 
 
-    public String recordDefense(Cell coordinates) {
+    /**
+     * Defends an attack on the given coordinates
+     * @param cell the cell (coordinates) of an attack
+     * @return the result of the attack
+     */
+    public String defend(Cell cell) {
         //todo maybe board could throw an exception if not valid...
-        return myBoard.attackHandling(coordinates.x, coordinates.y); //according to current board logic
+        return myBoard.attackHandling(cell.x, cell.y); //according to current board logic
     }
 
     /**
