@@ -13,12 +13,12 @@ public class Board {
         board = new Cell[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                board[i][j] = new Cell(i, j);
-            }
+                board[i][j] = new Cell(j, i);}
         }
     }
 
     public boolean placeShip(Ship ship) {
+        ArrayList<Cell> coordinatesShip = new ArrayList<>();
         if (!isValidPlacement(ship)) {
             System.out.println("Invalid ship placement");
             return false;
@@ -106,7 +106,7 @@ public class Board {
        return "invalid coordinates";
         }
 
-        Cell cell = board[x][y];  // make a cell with given coordinates
+        Cell cell = board[y][x];;  // make a cell with given coordinates
         if (cell.isAttacked()) {  // check if  cell was already attacked
             System.out.println("This cell was already attacked");
             return "cell already attacked";
