@@ -106,6 +106,7 @@ public class GameManager {
         switch (command) {
             case EXIT -> {
                 io.print("Exiting game...");
+                io.close();
                 System.exit(0);
             }
             case RESTART -> {

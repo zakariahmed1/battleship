@@ -227,4 +227,11 @@ public class IOManager {
         System.out.println(error);
     }
 
+    /**
+     * close the scanner
+     */
+    public void close() {
+        scanner.close();
+    }
+
 }
