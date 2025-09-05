@@ -34,14 +34,6 @@ public class IOManager {
         System.out.println();
     }
 
-    /**
-     * Displays a message when the player changes
-     * @param current the current player
-     */
-    public void changePlayer(Player current) {
-        waitForPlayerResponse("Player "+current.getName()+", press a key to continue!");
-        System.out.println(current.getName() + " it's your turn now!");
-    }
 
     /**
      * Prints the given message and waits for the player to enter anything to continue

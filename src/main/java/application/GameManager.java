@@ -36,9 +36,8 @@ public class GameManager {
             playTurn();
             if (!gameOver) {
                 //don't let the other player see the currents players board - clear the view first
-                io.waitForPlayerResponse(currentPlayer.getName() + " press a key to let the other player play!");
+                io.waitForPlayerResponse("Press enter to continue");
                 changePlayer();
-                io.changePlayer(currentPlayer);
             }
         }
         io.announceWinner(currentPlayer);
@@ -77,17 +76,10 @@ public class GameManager {
     // sets up the fleet for the 2 players
     private void setupBoards() {
         io.setupFleetMessage();
-        setupBoard(player1);
-        setupBoard(player2);
+        chooseFleet(player1);
+        chooseFleet(player2);
     }
-
-    private void setupBoard(Player player) {
-        chooseFleet(player);
-        io.drawBoard(player.getBoard().VisualizeBoard());
-        //Don't let the other player see the current players board
-        io.waitForPlayerResponse(player.getName()+ " press a key to let the other player play!");
-        io.changePlayer(getOpponent(player));
-    }
+    
 
     // let the player choose and place the fleet
     private void chooseFleet(Player player) {
