@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Optional;
+
 /**
  * The GameManager class manages the flow of a turn-based console game.
  * It is repsonsible for:
@@ -8,18 +10,21 @@ package application;
  *  - Reacting to commands
  *  - Checking whether the game has ended
  */
-public class GameManager {
+public class GameManager implements SpecialForceExecutor {
 
     private Player player1;
     private Player player2;
     private Player currentPlayer;
     private final IOManager io;
 
+    private static SpecialForceExecutor specialForceExecutor;
+
     private boolean gameOver;
 
     public GameManager() {
         io = new IOManager();
         io.introduceGame();
+        specialForceExecutor = this;
     }
 
     public void initializeGame() {
@@ -33,7 +38,14 @@ public class GameManager {
     // Game loop
     public void startGame() {
         while (!gameOver) {
-            playTurn();
+            if (currentPlayer.hasToSkip()) {
+                currentPlayer.skipRounds(false);
+                io.print(currentPlayer.getName()+" you are skipping this round!");
+            }
+            else
+            {
+                playTurn();
+            }
             if (!gameOver) {
                 //don't let the other player see the currents players board - clear the view first
                 io.waitForPlayerResponse("Press enter to continue");
@@ -183,4 +195,23 @@ public class GameManager {
            // case "miss" -> {io.print("miss!");} //already done by board
         }
     }
+
+    @Override
+    public void skipRound() {
+        io.print("You hit a ship with a special force! You will skip the next round!");
+        currentPlayer.skipRounds(true);
+        //PLAYER SKIP ROUND - ABER WELCHER?
+    }
+
+    public void randomCounterAttack() {
+        //print output that we are going to attack
+        //change player? for redunand calls?
+        //handleAttack
+        //change player back?
+    }
+
+    public static Optional<SpecialForceExecutor> getSpecialForceExecutorInstance() {
+        return Optional.of(specialForceExecutor);
+    }
+
 }
