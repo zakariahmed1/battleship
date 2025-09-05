@@ -203,6 +203,7 @@ public class GameManager implements SpecialForceExecutor {
         //PLAYER SKIP ROUND - ABER WELCHER?
     }
 
+    @Override
     public void randomCounterAttack() {
         //print output that we are going to attack
         //change player? for redunand calls?
@@ -210,6 +211,9 @@ public class GameManager implements SpecialForceExecutor {
         //change player back?
     }
 
+    /**
+     * @return the current instance of this object as a SpecialForceExectutor
+     */
     public static Optional<SpecialForceExecutor> getSpecialForceExecutorInstance() {
         return Optional.of(specialForceExecutor);
     }
