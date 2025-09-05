@@ -1,5 +1,6 @@
 package application;
 
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -16,10 +17,24 @@ public class BotPlayer extends Player {
     }
 
     @Override
-    public Cell getAttack(Board enemyBoard) {
+    public Cell getAttack(Board enemyBoard) throws CommandException {
         // create an attack based on the enemyBoard current situation
-        return null;
+        Random randomAttack = new Random();
+
+        while(true) {
+
+            int x = random.nextInt(enemyBoard.getWidth());
+            int y = random.nextInt(enemyBoard.getHeight());
+            Cell target = new Cell(x, y);
+
+            // makes sure the cell is still hidden
+            if(!enemyBoard.wasAttacked(target)) {
+                return target;
+            }
+        }
     }
+
+
 
     @Override
     public void chooseFleet() throws CommandException {
@@ -60,7 +75,7 @@ public class BotPlayer extends Player {
 
         boolean horizontal = random.nextBoolean();
         int boardWidth = myBoard.getWidth();
-        int boardHeight = myBoard.getHeigth();
+        int boardHeight = myBoard.getHeight();
 
         if (horizontal) {
             int y = random.nextInt(boardHeight);

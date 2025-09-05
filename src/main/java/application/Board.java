@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Board {
+
     private final int SIZE = 10;
     private final Cell[][] board;
     Ship ship;
@@ -172,10 +173,19 @@ public class Board {
     }
 
     public int getWidth() {
-        return 0;
+        return board[0].length;  //num of columns
     }
 
-    public int getHeigth() {
-        return 0;
+    public int getHeight() {
+        return board.length;    // num of rows
+    }
+
+    public boolean wasAttacked(Cell cell) {
+        // checks for valid coordinates
+        if (cell.getX() < 0 || cell.getX() >= getWidth()
+                || cell.getY() < 0 || cell.getY() >= getHeight()) {
+            throw new IllegalArgumentException("Cell is out of board bounds: " + cell);
+        }
+        return board[cell.getY()][cell.getX()].isAttacked();
     }
 }
