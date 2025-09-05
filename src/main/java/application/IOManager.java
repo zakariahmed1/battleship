@@ -1,12 +1,14 @@
 package application;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-//Manages input/outputs for the application
+/**
+ *  This class is repsonsible for the input/outputs. It uses a scanner object to read from stdin and
+ *  provides some methods with predefined outputs.
+ */
 public class IOManager {
     Scanner scanner;
 
@@ -14,57 +16,59 @@ public class IOManager {
         scanner = new Scanner(System.in);
     }
 
-    // prints welcome message and short rule description
+    /**
+     * prints welcome message and short rule description
+     */
     public void introduceGame() {
         System.out.println("Welcome to CLI Battleship!\n");
         System.out.println("Prepare for a head-to-head naval battle between two players.");
-        System.out.println(
-                "Each of you will command a fleet and take turns launching attacks to sink the enemy ships.\n");
+        System.out.println("Each of you will command a fleet and take turns launching attacks" +
+                " to sink the enemy ships.\n");
         System.out.println("Fleet Rules:");
         System.out.println("- Ships can be placed horizontally or vertically.");
         System.out.println("- Ships cannot overlap or go out of bounds.\n");
         System.out.println("How to Play:");
         System.out.println("- Players take turns entering coordinates to fire at the enemy grid.");
-        System.out.println("- You’ll be told if it’s a hit or a miss—and when a ship is sunk.");
+        System.out.println("- You'll be told if it's a hit or a miss - and when a ship is sunk.");
         System.out.println("- The first to sink all enemy ships wins the battle!");
         System.out.println();
     }
 
-    // clears the terminal and siplays a message with the name of the player
-    // supposed to play next
-    public void changePlayer(Player current) {
-        waitForPlayerResponse("Player "+current.getName()+", press a key to continue!");
-        System.out.println(current.getName() + " it's your turn now!");
-    }
 
+    /**
+     * Prints the given message and waits for the player to enter anything to continue
+     * @param message the message to print
+     */
     public void waitForPlayerResponse(String message) {
         System.out.println(message);
         scanner.nextLine();
         clearTerminal();
     }
 
-    // clears the terminal
+    // clears the terminal such that the other player does not see the previous players board
+
+    /**
+     * Clears the terminal.
+     */
     private void clearTerminal() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    // Displays a winning message with the winners name
+    /**
+     * Displays a winning message for the given player
+     * @param winner the winning player
+     */
     public void announceWinner(Player winner) {
         System.out.println("Conratulations, " + winner.getName() + " has won the game.");
     }
 
-    // asks the user to input player names and returns a list of names
-    public String inputPlayers(boolean isFirstPlayer) { //todo commandexcpeion
-        /*System.out.println(
-                "Let's start by setting up players names. If you wish to play against a bot type in only your name, if you are two players make sure the two names are separated by a comma.");
-        String in = scanner.nextLine();
-        return Arrays.stream(in.split(","))
-                .map(n -> n.trim())
-                .filter(n -> !n.isEmpty())
-                .toList();
-
-         */
+    /**
+     * Asks the player for its name. If it is the second player, let him choose to be a bot.
+     * @param isFirstPlayer true if it is the first player, that cannot be a bot
+     * @return the name of the player or an empty string if the player chose the bot
+     */
+    public String askPlayerName(boolean isFirstPlayer) {
         if (isFirstPlayer) {
             System.out.println("Enter first player name: ");
         }
@@ -74,7 +78,9 @@ public class IOManager {
         return scanner.nextLine();
     }
 
-    // displays a message explaining rules to setup the fleet
+    /**
+     * Displays a message explaining rules to set up the fleet
+     */
     public void setupFleetMessage() {
         System.out.println("Perfect, now it's time to set up your fleet.");
         System.out.println("Each player has a 9x9 grid to place their fleet and track enemy fire.");
@@ -86,7 +92,7 @@ public class IOManager {
     }
 
     /**
-     * Lets the player choose a ship from all the possible supported ships.
+     * Lets the player choose a ship from all the possible supported ships present in the ship builder class
      *
      * @param board the 2D string representation of the board.
      * @return the chosen ship instance.
@@ -190,11 +196,34 @@ public class IOManager {
     }
 
     /**
+     * Prints a helping page for the supported commands
+     */
+    public void printHelp() {
+        System.out.println();
+        System.out.println();
+        System.out.println("--------------------------------------");
+        System.out.println("The following commands are supported: ");
+        System.out.println("HELP\t\t- Print ths help page");
+        System.out.println("RESTART\t\t- Restarting the game");
+        System.out.println("EXIT\t\t- Exit the game");
+        System.out.println("SHOWBOARDS\t- draw your and your enemy's board");
+        System.out.println("--------------------------------------");
+        System.out.println();
+    }
+
+    /**
      * Prints the given error message on the terminal
      * @param error the error message
      */
     public void print(String error) {
         System.out.println(error);
+    }
+
+    /**
+     * close the scanner
+     */
+    public void close() {
+        scanner.close();
     }
 
 }

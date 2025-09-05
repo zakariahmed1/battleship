@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InputParser
@@ -40,7 +41,8 @@ public class InputParser
      * @return a List of cells corresponding to the coordinates or range
      * @throws IllegalArgumentException if:
      * - the input format is not correct
-     * - the input coordinates (range) does not corrispond to the ship size
+     * - the input contains negative numbers
+     * - the input is not a perfect 45° diagonal
      * @throws CommandException if the input string is a supported game command
      */
     public static List<Cell> parseCoordinatesRange(String input) throws IllegalArgumentException, CommandException
@@ -85,10 +87,12 @@ public class InputParser
             throwIfInputIsCommand(input); //throws CommandException
             int x = parseXCoordinate(input);
             int y = parseYCoordinate(input);
+            if (containsNegativeValue(x,y))
+                throw new IllegalArgumentException("Negative coordinates not supported!");
             return new Cell(x,y);
         }
-        catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid coordintes!");
+        catch (NumberFormatException | NullPointerException e) {
+            throw new IllegalArgumentException("Invalid coordinates!");
         }
     }
 
@@ -101,14 +105,21 @@ public class InputParser
      * @param x2 the ending x-coordinate
      * @param y2 the ending y-coordinate
      * @return a List of Cells created from the range.
-     * @throws IllegalArgumentException if the range does not correspond to the chosen ship size
+     //@throws IllegalArgumentException if:
+        - the range contains negative numbers
+        - the range is not a perfect diagonal
      */
     public static List<Cell> getCellsFromRange(int x1, int y1, int x2, int y2) {
+
+        if (containsNegativeValue(x1,y1,x2,y2))
+            throw new IllegalArgumentException("Negative coordinates not supported!");
+
+        //todo maybe dont allow diagonals?
+        if (!isValidLine(x1,y1,x2,y2)) // no straight line
+            throw new IllegalArgumentException("Invalid coordinates!");
+
         int deltaX = Integer.compare(x2,x1);
         int deltaY = Integer.compare(y2,y1);
-
-        if (Integer.max(Math.abs(x2-x1),Math.abs(y2-y1)) > ShipBuilder.getMaxSupportedShipSize())
-            throw new IllegalArgumentException("Range too high!");
 
         List<Cell> range = new ArrayList<>();
 
@@ -141,6 +152,25 @@ public class InputParser
         }
     }
 
+    /*
+     * returns true, if the parameters contain a negative value
+     */
+    private static boolean containsNegativeValue(int ... num) {
+        return Arrays.stream(num).anyMatch(n -> n < 0);
+    }
+
+    /*
+     * returns true, if the given range is valid.
+     * the range is valid if:
+     *    - it is a horizontal line
+     *    - it is a diagonal
+     */
+    private static boolean isValidLine(int x1, int y1, int x2, int y2) {
+        if (x1 != x2 && y1 != y2) // no straight line
+            if (x1 != y1 || x2 != y2)  // and no perfect diagonal (45°)
+                return false;
+        return true;
+    }
 
     /*
      * parses the x coordinate out of the following format: x,y

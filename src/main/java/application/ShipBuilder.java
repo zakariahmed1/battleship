@@ -30,7 +30,7 @@ public class ShipBuilder
      * counts how many ship type this game supports.
      * @return the number of possible ship types
      */
-    public int getNumberOfShipTypes() {
+    public static int getNumberOfShipTypes() {
         return possibleShips.length;
     }
 

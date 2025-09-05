@@ -6,5 +6,7 @@ package application;
 public enum Command
 {
     EXIT,
-    RESTART
+    RESTART,
+    SHOWBOARDS,
+    HELP
 }
