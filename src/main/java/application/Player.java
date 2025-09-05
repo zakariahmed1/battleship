@@ -10,6 +10,7 @@ public abstract class Player {
     protected final Board myBoard;
     protected final int MAX_FLEET_CELLS = 6;
     private int occupiedCells;
+    private boolean skipRound;
 
     protected List<Ship> ships = new ArrayList<>();
 
@@ -68,7 +69,7 @@ public abstract class Player {
         if (name.isEmpty())
             throw new IllegalArgumentException("Name must not be empty");
 
-        if (name.length() > 15)
+        if (name.length() > 20)
             throw new IllegalArgumentException("Name length must not exceed 15 characters");
 
         if (name.matches(".*\\s+.*"))
@@ -118,6 +119,21 @@ public abstract class Player {
     public String defend(Cell cell) {
         //todo maybe board could throw an exception if not valid...
         return myBoard.attackHandling(cell.x, cell.y); //according to current board logic
+    }
+
+    /**
+     * Enables or disables skipping rounds for this player
+     * @param skip true to skip the following rounds, false to resume back to normal
+     */
+    public void skipRounds(boolean skip) {
+        skipRound = skip;
+    }
+
+    /**
+     * @return true, if this player has to skip its round
+     */
+    public boolean hasToSkip() {
+        return skipRound;
     }
 
     /**
