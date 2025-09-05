@@ -69,7 +69,7 @@ public abstract class Player {
         if (name.isEmpty())
             throw new IllegalArgumentException("Name must not be empty");
 
-        if (name.length() > 15)
+        if (name.length() > 20)
             throw new IllegalArgumentException("Name length must not exceed 15 characters");
 
         if (name.matches(".*\\s+.*"))
