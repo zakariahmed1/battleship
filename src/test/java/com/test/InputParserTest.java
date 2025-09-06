@@ -106,9 +106,12 @@ public class InputParserTest
     @DisplayName("Test parsing a incorrect string of a coordinate range")
     @Test
     void testCoordinateRangeInvalidInput() {
-        String input = "0,0-1,2";
-        assertThrows(IllegalArgumentException.class,
-                () -> InputParser.parseCoordinatesRange(input));
+        String[] input = {"0,0-1,2", "9,7-99", "-9,7-9,9", "-5,0", "3"};
+
+        for (String test : input) {
+            assertThrows(IllegalArgumentException.class,
+                    () -> InputParser.parseCoordinatesRange(test));
+        }
     }
 
     @DisplayName("Test a valid ship selection")
@@ -127,7 +130,5 @@ public class InputParserTest
         assertThrows(IllegalArgumentException.class,
                 () -> InputParser.parseShip(""+ShipBuilder.getNumberOfShipTypes()+1));
     }
-
-
 
 }

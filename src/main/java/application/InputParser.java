@@ -38,7 +38,7 @@ public class InputParser
      * range of cells: x1,y1-x2,y2
      *
      * @param input the input string representing the coordinates
-     * @return a List of cells corresponding to the coordinates or range
+     * @return a List (vector) of cells corresponding to the range of the given coordinates
      * @throws IllegalArgumentException if:
      * - the input format is not correct
      * - the input contains negative numbers
@@ -49,31 +49,28 @@ public class InputParser
     {
         String error = "Please enter valid coordinates in the format x1,y1 or x1,y1-x2,y2 for a range!";
 
-        try
-        {
-            throwIfInputIsCommand(input); //throws CommandException
-            String[] fromTo = input.split("-");
+        throwIfInputIsCommand(input);
 
-            if (fromTo.length == 1) {
-                return new ArrayList<>(List.of(parseCoordinates(fromTo[0])));
-            }
-            else if (fromTo.length == 2) {
-                int x1, y1, x2, y2;
-                x1 = parseXCoordinate(fromTo[0]);
-                y1 = parseYCoordinate(fromTo[0]);
-                x2 = parseXCoordinate(fromTo[1]);
-                y2 = parseYCoordinate(fromTo[1]);
-                return getCellsFromRange(x1, y1, x2, y2);
-            }
-            else {
-                throw new IllegalArgumentException(error);
-            }
-        }
-        catch (NumberFormatException | NullPointerException e)
-        {
+        String[] fromToSplit = input.split("-");
+
+        if (fromToSplit == null || fromToSplit.length == 0 || fromToSplit.length > 2)
             throw new IllegalArgumentException(error);
+
+        try {
+            int x1 = parseXCoordinate(fromToSplit[0]);
+            int y1 = parseYCoordinate(fromToSplit[0]);
+            int x2 = x1;
+            int y2 = y1;
+
+            if (fromToSplit.length == 2) {
+                x2 = parseXCoordinate(fromToSplit[1]);
+                y2 = parseYCoordinate(fromToSplit[1]);
+            }
+            return getCellsFromRange(x1,y1,x2,y2);
         }
-    }
+        catch(NumberFormatException | NullPointerException e) {throw new IllegalArgumentException(error);}
+
+        }
 
     /**
      * Creates a Cell object out of String coordinates.
@@ -84,12 +81,10 @@ public class InputParser
      */
     public static Cell parseCoordinates(String input) throws IllegalArgumentException, CommandException{
         try {
-            throwIfInputIsCommand(input); //throws CommandException
-            int x = parseXCoordinate(input);
-            int y = parseYCoordinate(input);
-            if (containsNegativeValue(x,y))
-                throw new IllegalArgumentException("Negative coordinates not supported!");
-            return new Cell(x,y);
+            List<Cell> a = parseCoordinatesRange(input);
+            if (a == null || a.size() != 1)
+                throw new IllegalArgumentException("Invalid Coordinates");
+            return a.get(0);
         }
         catch (NumberFormatException | NullPointerException e) {
             throw new IllegalArgumentException("Invalid coordinates!");
@@ -98,13 +93,13 @@ public class InputParser
 
 
     /**
-     * Creates a List of cells out of the given coordinate range
+     * Creates a List (vector) of cells out of the given coordinate range
      *
      * @param x1 the starting x-coordinate
      * @param y1 the starting y-coordinate
      * @param x2 the ending x-coordinate
      * @param y2 the ending y-coordinate
-     * @return a List of Cells created from the range.
+     * @return a List (vector) of cells created from the range.
      //@throws IllegalArgumentException if:
         - the range contains negative numbers
         - the range is not a perfect diagonal
@@ -176,15 +171,24 @@ public class InputParser
      * parses the x coordinate out of the following format: x,y
      */
     private static int parseXCoordinate(String coord) throws NumberFormatException {
-        return Integer.parseInt(coord.split(",")[0]);
+        return getCoordinateComponent(coord, 1);
     }
 
     /*
      * parses the y coordinate out of the following format: x,y
      */
-
     private static int parseYCoordinate(String coord) throws NumberFormatException {
-        return Integer.parseInt(coord.split(",")[1]);
+        return getCoordinateComponent(coord, 0);
+    }
+
+    /*
+     * helper method to extract a value out of coordinates, where index = 0 is the x value, and index = 1 the y value
+     */
+    private static int getCoordinateComponent(String input, int index) throws NumberFormatException {
+        String[] split = input.split(",");
+        if (split.length != 2)
+            throw new NumberFormatException("No valid coordinates");
+        return Integer.parseInt(split[index]);
     }
 
 

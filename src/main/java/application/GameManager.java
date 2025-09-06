@@ -186,21 +186,21 @@ public class GameManager implements SpecialForceExecutor {
     private void handleAttack(Player defender, Cell coordinates) {
         String attackResult = defender.defend(coordinates);
 
-        //todo further reactions to attacks
-        switch (attackResult) {
+        //nothing to do, error outputs already done in board
+
+        /*switch (attackResult) {
             case "invalid coordinates" -> { throw new IllegalArgumentException("Coordinates " +coordinates+ " are invalid! Try again!");} // throw exception
             case "cell already attacked" -> { throw new IllegalArgumentException("Coordinates "+coordinates+" already revealed! Try again!");} //throw exception
            // case "hit and sunk" -> {io.print("Hit and sunk!");} //already done by board
            // case "hit" -> {io.print("Hit!");} //already done by board
            // case "miss" -> {io.print("miss!");} //already done by board
-        }
+        }*/
     }
 
     @Override
     public void skipRound() {
         io.print("You hit a ship with a special force! You will skip the next round!");
         currentPlayer.skipRounds(true);
-        //PLAYER SKIP ROUND - ABER WELCHER?
     }
 
     @Override
