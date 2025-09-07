@@ -116,7 +116,7 @@ public class Board {
         cell.attack(); //attack the cell at given coordinate
         if (cell.hasShip()) {// check if there is a ship there
             Ship ship = cell.getShip(); // if there is a ship at that cell make ship ob,j
-            ship.registerHit(cell);
+            //ship.registerHit(cell);
             System.out.println("Hit!");
             if (ship.isSunk()) {
                 System.out.println("Ship sunk!");

@@ -224,8 +224,8 @@ public class GameManager implements SpecialForceExecutor {
         String attackResult = defender.defend(coordinates);
 
         switch (attackResult) {
-            case "invalid coordinates" -> { throw new IllegalArgumentException("");} // msg already printed in board
-            case "cell already attacked" -> { throw new IllegalArgumentException("");} // msg already printed in board
+            case "invalid coordinates" -> { throw new IllegalArgumentException("Try again!");} // msg already printed in board
+            case "cell already attacked" -> { throw new IllegalArgumentException("Try again!");} // msg already printed in board
         }
     }
 
@@ -253,6 +253,16 @@ public class GameManager implements SpecialForceExecutor {
             specialCounterForceQueue.poll().performAction();
             checkGameOver();
         }
+    }
+
+    /*
+     * generates a random shot for a counter attack
+     */
+    private Cell getRandomShot() {
+        Random r = new Random();
+        int x = r.nextInt(player1.getBoard().getWidth());
+        int y = r.nextInt(player1.getBoard().getHeight());
+        return new Cell(x,y);
     }
 
     /**
@@ -293,7 +303,7 @@ public class GameManager implements SpecialForceExecutor {
         Player defender = getOpponent(attacker);
 
         io.print(defender.getName() + ", you hit a ship that is going to make a random counter attack, be prepared!");
-        Cell shot = new Cell(0, 0); //todo get random attack cell from bot
+        Cell shot = getRandomShot();
         io.print(attacker.getName() + " is attacking cell at x: " + shot.getX() + " y: " + shot.getY());
 
         try {
@@ -305,7 +315,7 @@ public class GameManager implements SpecialForceExecutor {
         }
 
         //show actual current players board, never the counter-attacking players board
-        io.print(currentPlayer.getName() + " you current board: ");
+        io.print(currentPlayer.getName() + " your current board: ");
         io.drawBoard(currentPlayer.getBoard().VisualizeBoard());
 
         //change the player for possible next counter-attack

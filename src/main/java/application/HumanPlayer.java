@@ -14,7 +14,7 @@ public class HumanPlayer extends Player{
     public Cell getAttack(Board enemyBoard) throws CommandException
     {
         io.waitForPlayerResponse(name + " press a key to continue!");
-        return io.inputAttack(enemyBoard.VisualizeEnemyBoard()); //no validation done, because the handleAttack method in the board class performs already checks
+        return io.inputAttack(myBoard.VisualizeBoard(), enemyBoard.VisualizeEnemyBoard()); //no validation done, because the handleAttack method in the board class performs already checks
     }
 
 

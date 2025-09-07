@@ -178,13 +178,15 @@ public class IOManager {
      * @return the Cell to attack
      * @throws CommandException if the player entered a supported command
      */
-    public Cell inputAttack(String[][] enemyBoard) throws CommandException{
+    public Cell inputAttack(String[][] boardView, String[][] enemyBoardView) throws CommandException{
+        System.out.println("Your board:");
+        drawBoard(boardView);
         System.out.println("Current enemies board: ");
-        drawBoard(enemyBoard);
+        drawBoard(enemyBoardView);
         Cell attack = null;
         do {
             try {
-                System.out.println("Enter the coordinates you want to attack: ");
+                System.out.println("Enter the coordinates you want to attack on the enemy's board: ");
                 attack = InputParser.parseCoordinates(scanner.nextLine());
             }
             catch (IllegalArgumentException e) {

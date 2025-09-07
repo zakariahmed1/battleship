@@ -75,9 +75,10 @@ public class Ship {
 
     //check if given cell has a hit
     public boolean isHit(Cell cell) {
-        for (Cell currCell : coordinates) {
-            if (currCell.equals(cell))
-                return true;
+        for (int i = 0; i < coordinates.size(); i++) {
+            if (coordinates.get(i).equals(cell)) {
+                return hits[i];
+            }
         }
         return false;
     }
