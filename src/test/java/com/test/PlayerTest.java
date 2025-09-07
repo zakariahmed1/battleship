@@ -21,7 +21,7 @@ public class PlayerTest
 
     @AfterAll
     static void closeIO() {
-        io.close();
+        //io.close();
     }
 
     @DisplayName("Test valid player name")
