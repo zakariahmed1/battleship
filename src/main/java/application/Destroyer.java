@@ -10,8 +10,8 @@ public class Destroyer extends Ship{
 
     @Override
     public void registerHit(Cell cell) {
-        //only perform a counter-attack if this part of the ship was not already attacked
-        if (!super.isHit(cell)) {
+        //only perform a counter-attack if this ship is not hit
+        if (!isSunk()) {
             super.registerHit(cell);
             GameManager.getInstance().enqueueSpecialCounterForce(specialForces);
         }
