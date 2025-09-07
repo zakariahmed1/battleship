@@ -121,24 +121,52 @@ public class GameManager implements SpecialForceExecutor {
     private void handleCommand(Command command) {
         switch (command) {
             case EXIT -> {
-                io.print("Exiting game...");
-                io.close();
-                System.exit(0);
+                handleExitCommand();
             }
             case RESTART -> {
-                io.print("Restarting game");
                 restartGame();
             }
             case SHOWBOARDS -> {
-                io.print("Your current board: ");
-                io.drawBoard(currentPlayer.getBoard().VisualizeBoard());
-                io.print("Your enemy's board: ");
-                io.drawBoard(getOpponent(currentPlayer).getBoard().VisualizeEnemyBoard());
+                handleShowBoardsCommand();
             }
             case HELP -> {
-                io.printHelp();
+                handleHelpCommand();
             }
         }
+    }
+
+    /*
+     * Exit game if user entered exit command
+     */
+    private void handleExitCommand() {
+        io.print("Exiting game...");
+        io.close();
+        System.exit(0);
+    }
+
+    /*
+     * Restarts game if user entered restart command
+     */
+    private void handleRestartCommand() {
+        io.print("Restarting game");
+        restartGame();
+    }
+
+    /*
+     * handles show board command
+     */
+    private void handleShowBoardsCommand() {
+        io.print("Your current board: ");
+        io.drawBoard(currentPlayer.getBoard().VisualizeBoard());
+        io.print("Your enemy's board: ");
+        io.drawBoard(getOpponent(currentPlayer).getBoard().VisualizeEnemyBoard());
+    }
+
+    /*
+     * handles help command
+     */
+    private void handleHelpCommand() {
+        io.printHelp();
     }
 
     /*
