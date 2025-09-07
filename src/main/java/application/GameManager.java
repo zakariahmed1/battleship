@@ -1,6 +1,6 @@
 package application;
 
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The GameManager class manages the flow of a turn-based console game.
@@ -15,44 +15,50 @@ public class GameManager implements SpecialForceExecutor {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
+    private Player currentCounterAttackPlayer;
     private final IOManager io;
+    private static GameManager gm; //singleton instance
+    private Queue<SpecialForce> specialCounterForceQueue; //queue for counter-attacks
+    private boolean gameInitialized;
 
-    private static SpecialForceExecutor specialForceExecutor;
 
     private boolean gameOver;
 
-    public GameManager() {
+    private GameManager() {
         io = new IOManager();
         io.introduceGame();
-        specialForceExecutor = this;
     }
 
     public void initializeGame() {
+        specialCounterForceQueue = new LinkedList<SpecialForce>();
         player1 = getNewPlayer(false, true); //first player cannot be a bot
         player2 = getNewPlayer(true, false); //second player can be a bot
         currentPlayer = player1;
         gameOver = false;
         setupBoards();
+        gameInitialized = true;
     }
 
-    // Game loop
+    /*
+     * Game Loop
+     */
     public void startGame() {
+
+        if (!gameInitialized)
+        {
+            io.print("Please initialize the game first!");
+            return;
+        }
+
         while (!gameOver) {
-            if (currentPlayer.hasToSkip()) {
-                currentPlayer.skipRounds(false);
-                io.print(currentPlayer.getName()+" you are skipping this round!");
-            }
-            else
-            {
-                playTurn();
-            }
+            playTurn();
             if (!gameOver) {
                 //don't let the other player see the currents players board - clear the view first
                 io.waitForPlayerResponse("Press enter to continue");
                 changePlayer();
             }
         }
-        io.announceWinner(currentPlayer);
+        io.announceWinner(getWinningPlayer());
     }
 
     /*
@@ -85,7 +91,9 @@ public class GameManager implements SpecialForceExecutor {
         return player;
     }
 
-    // sets up the fleet for the 2 players
+    /*
+     * sets up the fleet for the 2 players
+     */
     private void setupBoards() {
         io.setupFleetMessage();
         chooseFleet(player1);
@@ -93,7 +101,9 @@ public class GameManager implements SpecialForceExecutor {
     }
     
 
-    // let the player choose and place the fleet
+    /*
+     * let the player choose and place the fleet
+     */
     private void chooseFleet(Player player) {
         while (!player.isReady()) {
             try {
@@ -105,7 +115,9 @@ public class GameManager implements SpecialForceExecutor {
         }
     }
 
-    //Handle commands a player could enter
+    /*
+     * Handle commands a player could enter
+     */
     private void handleCommand(Command command) {
         switch (command) {
             case EXIT -> {
@@ -129,31 +141,61 @@ public class GameManager implements SpecialForceExecutor {
         }
     }
 
-    // resets the game state and restarts the game
+    /*
+     * resets the game state and restarts it
+     */
     private void restartGame() {
         player1 = null;
         player2 = null;
         currentPlayer = null;
+        currentCounterAttackPlayer = null;
+        specialCounterForceQueue = null;
         gameOver = false;
+        gameInitialized = false;
         initializeGame();
         startGame();
     }
 
-    // return opposite player to the one in the parameters
+    /*
+     * return opposite player to the one in the parameters
+     */
     private Player getOpponent(Player currentPlayer) {
         return currentPlayer.equals(player1) ? player2 : player1;
     }
 
-    // change the current player to the other player
+    /*
+     * change the current player to the other player
+     */
     private void changePlayer() {
         currentPlayer = getOpponent(currentPlayer);
     }
 
     /*
-     * Asks the player for an attacking cell, performs the attack on the defending player.
-     * If the defending player has lost, the game is over.
+     * Get the attacking cell from a player, handle the attack and perform the special-force counter attacks if present
      */
     private void playTurn() {
+        if (currentPlayer.hasToSkip()) {
+            currentPlayer.skipRounds(false);
+            io.print(currentPlayer.getName()+" you are skipping this round!");
+        }
+        else
+        {
+            handlePlayerTurn();
+            checkGameOver();
+            //if game is not over, perform counter-attacks if any
+            if (!gameOver)
+            {
+                currentCounterAttackPlayer = getOpponent(currentPlayer);
+                dequeueSpecialCounterForce();
+            }
+        }
+    }
+
+    /*
+     * Asks the player for an attacking cell, performs the attack on the defending player.
+     * Lets the player retry if the cell was invalid
+     */
+    private void handlePlayerTurn() {
 
         boolean validAttack = false;
         Player enemyPlayer = getOpponent(currentPlayer);
@@ -172,50 +214,101 @@ public class GameManager implements SpecialForceExecutor {
                 handleCommand(e.getCommand());
             }
         } while (!validAttack);
-
-        checkGameOver(enemyPlayer);
     }
 
-    // stop the game if game over
-    private void checkGameOver(Player defender) {
-        if (defender.hasLost())
-            gameOver = true;
-    }
-
-    // handles the attack
+    /*
+     * Checks the result of the attack.
+     * If it was an invalid cell, or the cell was already revealed, throw an exception
+     */
     private void handleAttack(Player defender, Cell coordinates) {
         String attackResult = defender.defend(coordinates);
 
-        //nothing to do, error outputs already done in board
-
-        /*switch (attackResult) {
-            case "invalid coordinates" -> { throw new IllegalArgumentException("Coordinates " +coordinates+ " are invalid! Try again!");} // throw exception
-            case "cell already attacked" -> { throw new IllegalArgumentException("Coordinates "+coordinates+" already revealed! Try again!");} //throw exception
-           // case "hit and sunk" -> {io.print("Hit and sunk!");} //already done by board
-           // case "hit" -> {io.print("Hit!");} //already done by board
-           // case "miss" -> {io.print("miss!");} //already done by board
-        }*/
+        switch (attackResult) {
+            case "invalid coordinates" -> { throw new IllegalArgumentException("");} // msg already printed in board
+            case "cell already attacked" -> { throw new IllegalArgumentException("");} // msg already printed in board
+        }
     }
 
-    @Override
-    public void skipRound() {
-        io.print("You hit a ship with a special force! You will skip the next round!");
-        currentPlayer.skipRounds(true);
+    /*
+     * set attribute gameOver to true if any player has lost
+     */
+    private void checkGameOver() {
+        if (player1.hasLost() || player2.hasLost())
+            gameOver = true;
     }
 
-    @Override
-    public void randomCounterAttack() {
-        //print output that we are going to attack
-        //change player? for redunand calls?
-        //handleAttack
-        //change player back?
+    /*
+     * returns the winning player
+     */
+    private Player getWinningPlayer()
+    {
+        return player1.hasLost() ? player2 : player1;
+    }
+
+    /*
+     * execute all the enqueued special-force counter-attacks
+     */
+    private void dequeueSpecialCounterForce() {
+        while (!specialCounterForceQueue.isEmpty() && !gameOver) {
+            specialCounterForceQueue.poll().performAction();
+            checkGameOver();
+        }
     }
 
     /**
      * @return the current instance of this object as a SpecialForceExectutor
      */
-    public static Optional<SpecialForceExecutor> getSpecialForceExecutorInstance() {
-        return Optional.of(specialForceExecutor);
+
+    public static GameManager getInstance() {
+        if (null == gm) {
+            gm = new GameManager();
+        }
+        return gm;
     }
 
+    /**
+     * enqueue a special force counter-attack that should be executed after the current round.
+     * All the enqueued counter-attacks are being invoked after the current round.
+     */
+    public void enqueueSpecialCounterForce(SpecialForce specialForces)
+    {
+        if (specialForces != null)
+        {
+            specialCounterForceQueue.add(specialForces);
+        }
+    }
+
+
+    @Override
+    public void skipRound() {
+        io.print(getOpponent(currentCounterAttackPlayer).getName()+ ", you hit a ship with a special force! You will skip the next round!");
+        getOpponent(currentCounterAttackPlayer).skipRounds(true);
+        currentCounterAttackPlayer = getOpponent(currentCounterAttackPlayer); //not needed, no more counterattacks
+    }
+
+    @Override
+    public void randomCounterAttack()
+    {
+        Player attacker = currentCounterAttackPlayer;
+        Player defender = getOpponent(attacker);
+
+        io.print(defender.getName() + ", you hit a ship that is going to make a random counter attack, be prepared!");
+        Cell shot = new Cell(0, 0); //todo get random attack cell from bot
+        io.print(attacker.getName() + " is attacking cell at x: " + shot.getX() + " y: " + shot.getY());
+
+        try {
+            handleAttack(defender, shot);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // dont react if already revealed cell was hit
+        }
+
+        //show actual current players board, never the counter-attacking players board
+        io.print(currentPlayer.getName() + " you current board: ");
+        io.drawBoard(currentPlayer.getBoard().VisualizeBoard());
+
+        //change the player for possible next counter-attack
+        currentCounterAttackPlayer = defender;
+    }
 }

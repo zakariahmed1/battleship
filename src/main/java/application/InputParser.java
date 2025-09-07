@@ -171,14 +171,14 @@ public class InputParser
      * parses the x coordinate out of the following format: x,y
      */
     private static int parseXCoordinate(String coord) throws NumberFormatException {
-        return getCoordinateComponent(coord, 1);
+        return getCoordinateComponent(coord, 0);
     }
 
     /*
      * parses the y coordinate out of the following format: x,y
      */
     private static int parseYCoordinate(String coord) throws NumberFormatException {
-        return getCoordinateComponent(coord, 0);
+        return getCoordinateComponent(coord, 1);
     }
 
     /*

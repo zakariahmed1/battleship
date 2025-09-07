@@ -73,6 +73,15 @@ public class Ship {
         } return count;
     }
 
+    //check if given cell has a hit
+    public boolean isHit(Cell cell) {
+        for (Cell currCell : coordinates) {
+            if (currCell.equals(cell))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "Ship (size = " + size + ", hits = " + java.util.Arrays.toString(hits) + " )";
