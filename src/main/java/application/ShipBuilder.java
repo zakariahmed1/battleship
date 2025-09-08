@@ -1,5 +1,10 @@
 package application;
 
+import application.entities.Cruiser;
+import application.entities.Destroyer;
+import application.entities.Ship;
+import application.entities.Submarine;
+
 import java.util.Arrays;
 import java.util.function.Supplier;
 

@@ -1,6 +1,11 @@
-package application;
+package application.entities;
 
-public class Cruiser extends Ship {
+import application.Cell;
+import application.GameManager;
+import application.SpecialForce;
+
+public class Cruiser extends Ship
+{
 
     SpecialForce specialForces;
 

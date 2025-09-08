@@ -1,4 +1,6 @@
-package application;
+package application.entities;
+
+import application.Cell;
 
 import java.util.List;
 

@@ -1,4 +1,6 @@
 package application;
+import application.entities.Ship;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 

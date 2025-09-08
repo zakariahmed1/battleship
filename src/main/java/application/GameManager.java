@@ -1,6 +1,5 @@
-package application.core;
+package application;
 
-import application.*;
 import application.entities.BotPlayer;
 import application.entities.HumanPlayer;
 import application.entities.Player;

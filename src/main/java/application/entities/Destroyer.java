@@ -1,6 +1,11 @@
-package application;
+package application.entities;
 
-public class Destroyer extends Ship{
+import application.Cell;
+import application.GameManager;
+import application.SpecialForce;
+
+public class Destroyer extends Ship
+{
     SpecialForce specialForces;
 
     public Destroyer(){

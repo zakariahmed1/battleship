@@ -1,8 +1,13 @@
-package application;
+package application.entities;
+
+import application.*;
+import application.io.CommandException;
+import application.io.IOManager;
 
 import java.util.List;
 
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player
+{
     private IOManager io;
 
     public HumanPlayer(String name, IOManager io) {

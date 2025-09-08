@@ -1,6 +1,8 @@
-package application;
+package application.io;
 
-import application.core.CommandException;
+import application.Cell;
+import application.ShipBuilder;
+import application.entities.Player;
 import application.entities.Ship;
 
 import java.util.Arrays;

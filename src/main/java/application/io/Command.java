@@ -1,4 +1,4 @@
-package application.core;
+package application.io;
 
 /**
  * An Enum of supported commands that a player can enter

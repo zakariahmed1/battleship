@@ -1,7 +1,7 @@
 package com.test;
 
-import application.HumanPlayer;
-import application.IOManager;
+import application.entities.HumanPlayer;
+import application.io.IOManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

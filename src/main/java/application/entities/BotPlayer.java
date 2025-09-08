@@ -1,11 +1,14 @@
-package application;
+package application.entities;
 
-import java.net.CookieHandler;
+import application.*;
+import application.io.CommandException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BotPlayer extends Player {
+public class BotPlayer extends Player
+{
 
     private Random random = new Random();
     public BotPlayer() {
@@ -17,7 +20,8 @@ public class BotPlayer extends Player {
     }
 
     @Override
-    public Cell getAttack(Board enemyBoard) throws CommandException {
+    public Cell getAttack(Board enemyBoard) throws CommandException
+    {
         // create an attack based on the enemyBoard current situation
         Random randomAttack = new Random();
 

@@ -1,5 +1,7 @@
 package application;
 
+import application.entities.Ship;
+
 public class Cell {
     Ship ship;
     int x;

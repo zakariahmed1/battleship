@@ -1,7 +1,7 @@
-package application;
+package application.io;
 
-import application.core.Command;
-import application.core.CommandException;
+import application.Cell;
+import application.ShipBuilder;
 import application.entities.Ship;
 
 import java.util.ArrayList;

@@ -1,6 +1,10 @@
 package com.test;
 
 import application.*;
+import application.io.Command;
+import application.io.CommandException;
+import application.entities.Ship;
+import application.io.InputParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

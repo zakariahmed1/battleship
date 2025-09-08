@@ -1,4 +1,4 @@
-package application.core;
+package application.io;
 
 /**
  * An exception that gets thrown when a player entered a command

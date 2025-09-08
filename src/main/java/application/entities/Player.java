@@ -1,7 +1,8 @@
-package application;
+package application.entities;
 
 
-import application.entities.Ship;
+import application.Board;
+import application.Cell;
 
 import java.util.ArrayList;
 import java.util.List;
