@@ -89,8 +89,8 @@ public class BotPlayer extends Player
         //randomly pick a ship type
         int type = random.nextInt(5);
         switch (type) {
-            case 0: return new Carrier();
-            case 1: return new Battleship();
+            /*case 0: return new Carrier();
+            case 1: return new Battleship();*/
             case 2: return new Cruiser();
             case 3: return new Submarine();
             default: return new Destroyer();
