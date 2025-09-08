@@ -1,4 +1,4 @@
-package application;
+package application.entities;
 
 @FunctionalInterface
 public interface SpecialForce

@@ -3,6 +3,7 @@ package application;
 import application.entities.BotPlayer;
 import application.entities.HumanPlayer;
 import application.entities.Player;
+import application.entities.SpecialForce;
 import application.io.Command;
 import application.io.CommandException;
 import application.io.IOManager;

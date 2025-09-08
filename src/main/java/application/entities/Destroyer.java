@@ -2,7 +2,6 @@ package application.entities;
 
 import application.Cell;
 import application.GameManager;
-import application.SpecialForce;
 
 public class Destroyer extends Ship
 {
