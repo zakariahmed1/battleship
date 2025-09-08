@@ -3,9 +3,7 @@ package application.entities;
 import application.*;
 import application.io.CommandException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BotPlayer extends Player
 {
@@ -19,12 +17,21 @@ public class BotPlayer extends Player
         super(name);
     }
 
-    @Override
-    public Cell getAttack(Board enemyBoard) throws CommandException
-    {
-        // create an attack based on the enemyBoard current situation
-        Random randomAttack = new Random();
+    private Queue<Cell> targetQ = new LinkedList<>(); // cells to try next
 
+
+    @Override
+    public Cell getAttack(Board enemyBoard) throws CommandException {
+
+        // if we already have target cells in queue (hunt mode)
+        while(!targetQ.isEmpty()){
+            Cell target = targetQ.poll();
+            if (!enemyBoard.wasAttacked(target)){
+                return target;    // attacks next cell
+            }
+        }
+
+        // else: random shot
         while(true) {
 
             int x = random.nextInt(enemyBoard.getWidth());
