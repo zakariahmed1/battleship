@@ -1,4 +1,12 @@
-package application;
+package application.core;
+
+import application.*;
+import application.entities.BotPlayer;
+import application.entities.HumanPlayer;
+import application.entities.Player;
+import application.io.Command;
+import application.io.CommandException;
+import application.io.IOManager;
 
 import java.util.*;
 
@@ -10,7 +18,8 @@ import java.util.*;
  *  - Reacting to commands
  *  - Checking whether the game has ended
  */
-public class GameManager implements SpecialForceExecutor {
+public class GameManager implements SpecialForceExecutor
+{
 
     private Player player1;
     private Player player2;

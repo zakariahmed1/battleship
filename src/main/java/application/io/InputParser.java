@@ -1,5 +1,9 @@
 package application;
 
+import application.core.Command;
+import application.core.CommandException;
+import application.entities.Ship;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,8 @@
 package application;
 
 
+import application.entities.Ship;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +120,7 @@ public abstract class Player {
      */
     public String defend(Cell cell) {
         //todo maybe board could throw an exception if not valid...
-        return myBoard.attackHandling(cell.x, cell.y); //according to current board logic
+        return myBoard.attackHandling(cell.getX(), cell.getY()); //according to current board logic
     }
 
     /**

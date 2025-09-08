@@ -1,5 +1,8 @@
 package application;
 
+import application.core.CommandException;
+import application.entities.Ship;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -97,7 +100,8 @@ public class IOManager {
      * @param board the 2D string representation of the board.
      * @return the chosen ship instance.
      */
-    public Ship inputShip(String[][] board) throws CommandException{
+    public Ship inputShip(String[][] board) throws CommandException
+    {
         System.out.println();
         System.out.println("Your current board: ");
         drawBoard(board);
