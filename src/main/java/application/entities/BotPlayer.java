@@ -64,14 +64,6 @@ public class BotPlayer extends Player
     }
 
 
-    //checks readiness and returns true only when the bot followed all the requirements
-    @Override
-    public boolean isReady() {
-        int occupied = getShips().stream()
-                .mapToInt(Ship::getSize)
-                .sum();
-        return occupied >= MAX_FLEET_CELLS;
-    }
 
     //the name of the method speaks for itself
     private List<Cell> generateRandomPlacement(int size) {

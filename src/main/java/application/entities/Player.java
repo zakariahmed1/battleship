@@ -15,7 +15,6 @@ public abstract class Player {
     private int occupiedCells;
     private boolean skipRound;
 
-    protected List<Ship> ships = new ArrayList<>();
 
 
     public Player(String name) {
@@ -88,9 +87,7 @@ public abstract class Player {
         return occupiedCells == MAX_FLEET_CELLS;
     }
 
-    public List<Ship> getShips(){
-        return ships;
-    }
+
 
     /*
      * adds the ship to the board
