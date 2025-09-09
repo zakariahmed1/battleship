@@ -264,6 +264,8 @@ public class GameManager implements SpecialForceExecutor
             case "invalid coordinates" -> { throw new IllegalArgumentException("Try again!");} // msg already printed in board
             case "cell already attacked" -> { throw new IllegalArgumentException("Try again!");} // msg already printed in board
         }
+
+
     }
 
     /*

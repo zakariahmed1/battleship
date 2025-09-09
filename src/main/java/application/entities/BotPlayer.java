@@ -45,6 +45,24 @@ public class BotPlayer extends Player
         }
     }
 
+    // enqueues neighbours after a hit
+    void enqueueNeighbors(Cell cell, Board enemyBoard){
+        int x = cell.getX();
+        int y = cell.getY();
+
+        // up
+        if (y > 0) targetQ.add(new Cell(x, y - 1));
+
+        // down
+        if (y < enemyBoard.getHeight() - 1)targetQ.add(new Cell(x, y +1));
+
+        // left
+        if (x > 0) targetQ.add(new Cell(x - 1, y));
+
+        // right
+        if (x < enemyBoard.getWidth() - 1) targetQ.add(new Cell(x + 1, y));
+    }
+
 
 
     @Override
