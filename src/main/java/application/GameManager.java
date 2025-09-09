@@ -258,6 +258,7 @@ public class GameManager implements SpecialForceExecutor
      * If it was an invalid cell, or the cell was already revealed, throw an exception
      */
     private void handleAttack(Player defender, Cell coordinates) {
+        io.print(getOpponent(defender).getName() + " is attacking cell: "+coordinates.getX()+ ", "+coordinates.getY());
         String attackResult = defender.defend(coordinates);
 
         switch (attackResult) {
@@ -343,7 +344,7 @@ public class GameManager implements SpecialForceExecutor
 
         io.print(defender.getName() + ", you hit a ship that is going to make a random counter attack, be prepared!");
         Cell shot = getRandomShot();
-        io.print(attacker.getName() + " is attacking cell at x: " + shot.getX() + " y: " + shot.getY());
+        //io.print(attacker.getName() + " is attacking cell at x: " + shot.getX() + " y: " + shot.getY());
 
         try {
             handleAttack(defender, shot);
