@@ -1,4 +1,6 @@
-package application;
+package application.entities;
+
+import application.Cell;
 
 import java.util.List;
 
@@ -72,6 +74,7 @@ public class Ship {
             if (!hit) count++;
         } return count;
     }
+
 
     @Override
     public String toString() {
