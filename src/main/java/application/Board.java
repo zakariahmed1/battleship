@@ -50,6 +50,27 @@ public class Board {
         return true;
     }
     public boolean placeRandomships(Ship ship){
+        ArrayList<Cell> coordinatesShip = new ArrayList<>();
+        while(!isValidRandomPlacement(ship))
+        {
+            placeRandomships(ship);
+        }
+        if (ship.getSize() > 3 || ship.getSize() <= 0) {
+            System.out.println("error size of the ship is too large or too small ");
+            return false;
+        } else {
+            //   coordinatesShip.addAll(ship.getCoordinates()); // put the ship coordinates in a l,ist
+            for ( Cell cell : ship.getCoordinates()){
+                cell.setX(cell.x+randomX);
+                cell.setY(cell.y+randomy);
+                coordinatesShip.add(cell);
+            }
+            for (int i = 0; i < coordinatesShip.size(); i++) { // l,oop through all the coordinates
+                Cell coordinatecell = coordinatesShip.get(i); // make an ob,ject of coorrdinateship and assign it each time the iterator
+                board[coordinatecell.y][coordinatecell.x].placeShip(ship); // place ship at the given coordinates
+            }
+            ships.add(ship);
+        }
 
 
         return true;
@@ -69,9 +90,9 @@ public class Board {
             }
         }
     }
-public void Timer(){
+    public void Timer(){
 
-}
+    }
     // Visualize the board (return a matrix representation)
     public String[][] VisualizeBoard() {
         String[][] visualization = new String[SIZE][SIZE];
@@ -124,7 +145,7 @@ public void Timer(){
 
         // Check bounds
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
-            //System.out.println("Invalid attack coordinates");
+            System.out.println("Invalid attack coordinates");
             return AttackResult.INVALID;
         }
 
@@ -132,7 +153,7 @@ public void Timer(){
 
         // Already attacked?
         if (target.isAttacked()) {
-            //System.out.println("This cell was already attacked");
+            System.out.println("This cell was already attacked");
             return AttackResult.ALREADY_ATTACKED;
         }
 
@@ -141,16 +162,16 @@ public void Timer(){
 
         if (target.hasShip()) {
             Ship ship = target.getShip();
-            //ship.registerHit(cell);
+            ship.registerHit(cell);
 
             System.out.println("Hit!");
             if (ship.isSunk()) {
-                //System.out.println("Ship sunk!");
+                System.out.println("Ship sunk!");
                 return AttackResult.SUNK;
             }
             return AttackResult.HIT;
         } else {
-            //System.out.println("Miss!");
+            System.out.println("Miss!");
             return AttackResult.MISS;
         }
     }
