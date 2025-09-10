@@ -1,6 +1,7 @@
 package application.entities;
 
 
+import application.AttackResult;
 import application.Board;
 import application.Cell;
 
@@ -116,9 +117,9 @@ public abstract class Player {
      * @param cell the cell (coordinates) of an attack
      * @return the result of the attack
      */
-    public String defend(Cell cell) {
+    public AttackResult defend(Cell cell) {
         //todo maybe board could throw an exception if not valid...
-        return myBoard.attackHandling(cell.getX(), cell.getY()); //according to current board logic
+        return myBoard.recordDefense(cell); //according to current board logic
     }
 
     /**

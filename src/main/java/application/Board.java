@@ -103,33 +103,43 @@ public class Board {
     }
 
     // Process an attack at given position
-    public String attackHandling(int x, int y) {
+    public AttackResult recordDefense(Cell cell) {
+        int x = cell.getX();
+        int y = cell.getY();
+
+        // Check bounds
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
             System.out.println("Invalid attack coordinates");
-       return "invalid coordinates";
+            return AttackResult.INVALID;
         }
 
-        Cell cell = board[y][x];;  // make a cell with given coordinates
-        if (cell.isAttacked()) {  // check if  cell was already attacked
+        Cell target = board[y][x];
+
+        // Already attacked?
+        if (target.isAttacked()) {
             System.out.println("This cell was already attacked");
-            return "cell already attacked";
+            return AttackResult.ALREADY_ATTACKED;
         }
 
-        cell.attack(); //attack the cell at given coordinate
-        if (cell.hasShip()) {// check if there is a ship there
-            Ship ship = cell.getShip(); // if there is a ship at that cell make ship ob,j
-            //ship.registerHit(cell);
+        // Mark attacked
+        target.attack();
+
+        if (target.hasShip()) {
+            Ship ship = target.getShip();
+            ship.registerHit(cell);
+
             System.out.println("Hit!");
             if (ship.isSunk()) {
                 System.out.println("Ship sunk!");
-                return "hit and sunk";
+                return AttackResult.SUNK;
             }
-            return "hit";
+            return AttackResult.HIT;
         } else {
             System.out.println("Miss!");
-            return "miss";
+            return AttackResult.MISS;
         }
     }
+
 
     // Check if all ships on the board are sunk
     public boolean isAllshipsunk() {
