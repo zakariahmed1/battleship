@@ -166,7 +166,7 @@ public void Timer(){
         return true;
     }
 
-    // Verify if a ship can be placed
+    // Verif y if a ship can be placed
     public boolean isValidRandomPlacement(Ship ship){
         for ( Cell cell: ship.getCoordinates()){
             int x = cell.x+randomX;
