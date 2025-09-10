@@ -9,8 +9,8 @@ import application.io.CommandException;
 import application.io.IOManager;
 
 import java.util.*;
-
 import static application.AttackResult.*;
+
 
 /**
  * The GameManager class manages the flow of a turn-based console game.
@@ -262,9 +262,18 @@ public class GameManager implements SpecialForceExecutor
     private void handleAttack(Player defender, Cell coordinates) {
         io.print(getOpponent(defender).getName() + " is attacking cell: "+coordinates.getX()+ ", "+coordinates.getY());
 
-        AttackResult result = defender.defend(coordinates);
 
-        switch (result) {
+        AttackResult attackResult = defender.defend(coordinates);
+
+
+        Player attacker = getOpponent(defender);
+        if (attacker instanceof BotPlayer bot) {
+            if (attackResult == AttackResult.HIT || attackResult == AttackResult.SUNK) {
+                bot.enqueueNeighbors(coordinates, defender.getBoard());
+            }
+        }
+
+        switch (attackResult) {
             case INVALID ->  throw new IllegalArgumentException("Try again!"); // msg already printed in board
             case ALREADY_ATTACKED -> throw new IllegalArgumentException("Try again!"); // msg already printed in board
             case HIT -> io.print("It's a hit!");

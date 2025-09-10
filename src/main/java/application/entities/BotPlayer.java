@@ -46,7 +46,7 @@ public class BotPlayer extends Player
     }
 
     // enqueues neighbours after a hit
-    void enqueueNeighbors(Cell cell, Board enemyBoard){
+    public void enqueueNeighbors(Cell cell, Board enemyBoard){
         int x = cell.getX();
         int y = cell.getY();
 
