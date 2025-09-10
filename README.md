@@ -174,7 +174,10 @@ After having a first working prototype, we merged dev into main.
 
 ### Anastasiia Guliaeva (@kamikaros):
 
-    - lorem ipsum
+    - Developing a working game flow between the GameManager, Player, Board and Cell classes.
+    - Making sure the ship placement goes according to the rules of the game and doesn't overlap.
+    - Preventing invalid attacks inside the game.
+    - Maintaining the game state consistent (board update, hiding the enemy's board, etc).
 
 ### Philipp Vieider (@str0el):
 
