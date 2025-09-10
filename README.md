@@ -170,7 +170,9 @@ After having a first working prototype, we merged dev into main.
 
 ### Zakaria Ahmed (@zakariahmed1)
 
-    - lorem ipsum
+    - logic between cell and board
+    - coordinating with the group
+  
 
 ### Anastasiia Guliaeva (@kamikaros):
 

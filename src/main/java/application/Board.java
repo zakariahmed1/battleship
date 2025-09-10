@@ -3,12 +3,20 @@ import application.entities.Ship;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Board {
 
     private final int SIZE = 10;
     private final Cell[][] board;
+    Random random = new Random();
+
+    int max=9;
+    int min=1;
+    int randomX=min + (max - min) * random.nextInt();
+    int randomy=min + (max - min) *random.nextInt();
     Ship ship;
+
     ArrayList<Cell> coordinatesShip = new ArrayList<>();
     ArrayList<Ship> ships = new ArrayList<>(); // To keep track of all ships on the board
 
@@ -41,6 +49,32 @@ public class Board {
         }
         return true;
     }
+    public boolean placeRandomships(Ship ship){
+        ArrayList<Cell> coordinatesShip = new ArrayList<>();
+        while(!isValidRandomPlacement(ship))
+        {
+            placeRandomships(ship);
+        }
+        if (ship.getSize() > 3 || ship.getSize() <= 0) {
+            System.out.println("error size of the ship is too large or too small ");
+            return false;
+        } else {
+            //   coordinatesShip.addAll(ship.getCoordinates()); // put the ship coordinates in a l,ist
+            for ( Cell cell : ship.getCoordinates()){
+                cell.setX(cell.x+randomX);
+                cell.setY(cell.y+randomy);
+                coordinatesShip.add(cell);
+            }
+            for (int i = 0; i < coordinatesShip.size(); i++) { // l,oop through all the coordinates
+                Cell coordinatecell = coordinatesShip.get(i); // make an ob,ject of coorrdinateship and assign it each time the iterator
+                board[coordinatecell.y][coordinatecell.x].placeShip(ship); // place ship at the given coordinates
+            }
+            ships.add(ship);
+        }
+
+
+        return true;
+    }
 
     // Remove all eliminated ships from the board
     public void removeEliminatedShips() {
@@ -56,7 +90,9 @@ public class Board {
             }
         }
     }
+    public void Timer(){
 
+    }
     // Visualize the board (return a matrix representation)
     public String[][] VisualizeBoard() {
         String[][] visualization = new String[SIZE][SIZE];
@@ -109,7 +145,7 @@ public class Board {
 
         // Check bounds
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
-            //System.out.println("Invalid attack coordinates");
+            System.out.println("Invalid attack coordinates");
             return AttackResult.INVALID;
         }
 
@@ -117,7 +153,7 @@ public class Board {
 
         // Already attacked?
         if (target.isAttacked()) {
-            //System.out.println("This cell was already attacked");
+            System.out.println("This cell was already attacked");
             return AttackResult.ALREADY_ATTACKED;
         }
 
@@ -126,16 +162,16 @@ public class Board {
 
         if (target.hasShip()) {
             Ship ship = target.getShip();
-            //ship.registerHit(cell);
+            ship.registerHit(cell);
 
             System.out.println("Hit!");
             if (ship.isSunk()) {
-                //System.out.println("Ship sunk!");
+                System.out.println("Ship sunk!");
                 return AttackResult.SUNK;
             }
             return AttackResult.HIT;
         } else {
-            //System.out.println("Miss!");
+            System.out.println("Miss!");
             return AttackResult.MISS;
         }
     }
@@ -152,6 +188,21 @@ public class Board {
     }
 
     // Verify if a ship can be placed
+    public boolean isValidRandomPlacement(Ship ship){
+        for ( Cell cell: ship.getCoordinates()){
+            int x = cell.x+randomX;
+            int y = cell.y+randomy;
+            if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+                return false;
+            }
+
+            // Check if cell already has a ship
+            if (board[y][x].hasShip()) {
+                return false;
+            }
+
+        } return true;
+    }
     public boolean isValidPlacement(Ship ship) {
         for (Cell cell : ship.getCoordinates()) {
             int x = cell.x;
