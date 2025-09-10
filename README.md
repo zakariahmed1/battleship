@@ -5,6 +5,7 @@
 This project is designed as a console-based educational project. It is a modified version of the classic **Battleship** game, developed in **Java**.
 In addition to the basic rules, it features:
 
+
 - 🤖 **Bot opponent** — Play solo against a Bot player
 - 🚀 **Special ships** — Certain ships trigger counter-actions when hit
 - 💬 **Console-based interface** — Interact through real-time prompts and feedback
@@ -117,6 +118,8 @@ src/main/java/application/App.java
 - **Ship → SpecialForce**  Manages special ship actions and queues them on the GameManager
 - **GameManager → Player** Gets the chosen fleet and the attacks from a player and performs attacks on the other player.
 - **GameManager → CommandExecutor** Implements the logic of special ship-counterattacks
+
+
 - **GameManager → CommandException :** GameManager handles Command-Exceptions
 - **GameManager/Player → IOManager:** Performs IO via the IOManager class
 - **GameManager → Queue<SpecialForces>:** Executes all the queued special-actions of ships
@@ -131,6 +134,7 @@ src/main/java/application/App.java
 ## Notable Programming Techniques
 
 - Encapsulation & Abstraction: Using the main principles of OOP to encapsulate classes and behaviours
+
 - Polymorphism: Using Player and Ship and SpecialForce as a reference type and the overridden methods via dynamic dispatching
 - Static members: Using static methods for non-object related behaviours (parsing data)
 - Singleton pattern: The GameManager is implemented as a Singleton
@@ -138,6 +142,7 @@ src/main/java/application/App.java
 - Functional Programming & Streams: Used lambdas to implement functional interfaces, streams for concise code
 - Generic types / AAD and their implementations: Used Lists and Queue 
 - IO: Used Scanner class for IO via terminal (System.in/out)
+
 - Unit tests: JUnit for automatic tests
 - Generally code simplifying techniques like factorizing in methods, returns in loops, boolean conditions etc.
 
