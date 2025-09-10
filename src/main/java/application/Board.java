@@ -162,7 +162,6 @@ public class Board {
 
         if (target.hasShip()) {
             Ship ship = target.getShip();
-            ship.registerHit(cell);
 
             System.out.println("Hit!");
             if (ship.isSunk()) {
