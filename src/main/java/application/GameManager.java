@@ -265,8 +265,8 @@ public class GameManager implements SpecialForceExecutor
         AttackResult result = defender.defend(coordinates);
 
         switch (result) {
-            case INVALID ->  throw new IllegalArgumentException("Try again!"); // msg already printed in board
-            case ALREADY_ATTACKED -> throw new IllegalArgumentException("Try again!"); // msg already printed in board
+            case INVALID ->  throw new IllegalArgumentException("Invalid attack coordinates! Try again!"); // msg already printed in board
+            case ALREADY_ATTACKED -> throw new IllegalArgumentException("This cell was already attacked! Try again!"); // msg already printed in board
             case HIT -> io.print("It's a hit!");
             case SUNK -> io.print("Ship sunk!");
             case MISS -> io.print("Miss");
