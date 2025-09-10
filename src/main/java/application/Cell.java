@@ -1,5 +1,7 @@
 package application;
 
+import application.entities.Ship;
+
 public class Cell {
     Ship ship;
     int x;
@@ -12,6 +14,8 @@ public class Cell {
         this.attacked = false;
     }
 
+    public int getX(){ return x; }
+    public int getY() { return y;}
     public Cell() {
         this.attacked = false;
     }

@@ -1,10 +1,12 @@
-package application;
+package application.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import application.*;
+import application.io.CommandException;
 
-public class BotPlayer extends Player {
+import java.util.*;
+
+public class BotPlayer extends Player
+{
 
     private Random random = new Random();
     public BotPlayer() {
@@ -15,11 +17,53 @@ public class BotPlayer extends Player {
         super(name);
     }
 
+    private Queue<Cell> targetQ = new LinkedList<>(); // cells to try next
+
+
     @Override
-    public Cell getAttack(Board enemyBoard) {
-        // create an attack based on the enemyBoard current situation
-        return null;
+    public Cell getAttack(Board enemyBoard) throws CommandException {
+
+        // if we already have target cells in queue (hunt mode)
+        while(!targetQ.isEmpty()){
+            Cell target = targetQ.poll();
+            if (!enemyBoard.wasAttacked(target)){
+                return target;    // attacks next cell
+            }
+        }
+
+        // else: random shot
+        while(true) {
+
+            int x = random.nextInt(enemyBoard.getWidth());
+            int y = random.nextInt(enemyBoard.getHeight());
+            Cell target = new Cell(x, y);
+
+            // makes sure the cell is still hidden
+            if(!enemyBoard.wasAttacked(target)) {
+                return target;
+            }
+        }
     }
+
+    // enqueues neighbours after a hit
+    void enqueueNeighbors(Cell cell, Board enemyBoard){
+        int x = cell.getX();
+        int y = cell.getY();
+
+        // up
+        if (y > 0) targetQ.add(new Cell(x, y - 1));
+
+        // down
+        if (y < enemyBoard.getHeight() - 1)targetQ.add(new Cell(x, y +1));
+
+        // left
+        if (x > 0) targetQ.add(new Cell(x - 1, y));
+
+        // right
+        if (x < enemyBoard.getWidth() - 1) targetQ.add(new Cell(x + 1, y));
+    }
+
+
 
     @Override
     public void chooseFleet() throws CommandException {
@@ -45,22 +89,14 @@ public class BotPlayer extends Player {
     }
 
 
-    //checks readiness and returns true only when the bot followed all the requirements
-    @Override
-    public boolean isReady() {
-        int occupied = getShips().stream()
-                .mapToInt(Ship::getSize)
-                .sum();
-        return occupied >= MAX_FLEET_CELLS;
-    }
 
     //the name of the method speaks for itself
     private List<Cell> generateRandomPlacement(int size) {
         List<Cell> cells = new ArrayList<>();
 
         boolean horizontal = random.nextBoolean();
-        int boardWidth = board.getWidth();
-        int boardHeight = board.getHeigth();
+        int boardWidth = myBoard.getWidth();
+        int boardHeight = myBoard.getHeight();
 
         if (horizontal) {
             int y = random.nextInt(boardHeight);
@@ -78,8 +114,8 @@ public class BotPlayer extends Player {
         //randomly pick a ship type
         int type = random.nextInt(5);
         switch (type) {
-            case 0: return new Carrier();
-            case 1: return new Battleship();
+            /*case 0: return new Carrier();
+            case 1: return new Battleship();*/
             case 2: return new Cruiser();
             case 3: return new Submarine();
             default: return new Destroyer();

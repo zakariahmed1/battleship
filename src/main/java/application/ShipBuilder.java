@@ -1,5 +1,10 @@
 package application;
 
+import application.entities.Cruiser;
+import application.entities.Destroyer;
+import application.entities.Ship;
+import application.entities.Submarine;
+
 import java.util.Arrays;
 import java.util.function.Supplier;
 
@@ -30,7 +35,7 @@ public class ShipBuilder
      * counts how many ship type this game supports.
      * @return the number of possible ship types
      */
-    public int getNumberOfShipTypes() {
+    public static int getNumberOfShipTypes() {
         return possibleShips.length;
     }
 

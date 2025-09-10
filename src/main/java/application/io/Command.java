@@ -1,4 +1,4 @@
-package application;
+package application.io;
 
 /**
  * An Enum of supported commands that a player can enter
@@ -6,5 +6,7 @@ package application;
 public enum Command
 {
     EXIT,
-    RESTART
+    RESTART,
+    SHOWBOARDS,
+    HELP
 }
