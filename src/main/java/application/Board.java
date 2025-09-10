@@ -1,11 +1,19 @@
 package application;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Board {
     private final int SIZE = 10;
     private final Cell[][] board;
+    Random random = new Random();
+
+    int max=9;
+    int min=1;
+    int randomX=min + (max - min) * random.nextInt();
+    int randomy=min + (max - min) *random.nextInt();
     Ship ship;
+
     ArrayList<Cell> coordinatesShip = new ArrayList<>();
     ArrayList<Ship> ships = new ArrayList<>(); // To keep track of all ships on the board
 
@@ -38,6 +46,11 @@ public class Board {
         }
         return true;
     }
+    public boolean placeRandomships(Ship ship){
+
+
+        return true;
+    }
 
     // Remove all eliminated ships from the board
     public void removeEliminatedShips() {
@@ -53,7 +66,9 @@ public class Board {
             }
         }
     }
+public void Timer(){
 
+}
     // Visualize the board (return a matrix representation)
     public String[][] VisualizeBoard() {
         String[][] visualization = new String[SIZE][SIZE];
@@ -139,6 +154,21 @@ public class Board {
     }
 
     // Verify if a ship can be placed
+    public boolean isValidRandomPlacement(Ship ship){
+        for ( Cell cell: ship.getCoordinates()){
+            int x = cell.x+randomX;
+            int y = cell.y+randomy;
+            if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
+                return false;
+            }
+
+            // Check if cell already has a ship
+            if (board[y][x].hasShip()) {
+                return false;
+            }
+
+        } return true;
+    }
     public boolean isValidPlacement(Ship ship) {
         for (Cell cell : ship.getCoordinates()) {
             int x = cell.x;
