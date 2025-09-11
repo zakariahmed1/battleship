@@ -180,6 +180,7 @@ public class Board {
 
     // Process an attack at given position
     public AttackResult recordDefense(Cell cell) {
+
         int x = cell.getX();
         int y = cell.getY();
 

@@ -61,6 +61,7 @@ public class Ship {
 
     //check if the ship is fully sunk
     public boolean occupies(Cell cell){
+
         if (coordinates == null) return false;
         return coordinates.contains(cell);
     }

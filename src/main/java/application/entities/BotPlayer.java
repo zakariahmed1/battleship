@@ -47,6 +47,7 @@ public class BotPlayer extends Player
 
     // enqueues neighbours after a hit
     public void enqueueNeighbors(Cell cell, Board enemyBoard){
+
         int x = cell.getX();
         int y = cell.getY();
 
@@ -67,6 +68,7 @@ public class BotPlayer extends Player
 
     @Override
     public void chooseFleet() throws CommandException {
+
         // creates the ships and placements
         while (!isReady()){
             Ship ship = randomShip(); // picks a random ship type

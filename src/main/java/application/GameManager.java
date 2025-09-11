@@ -260,7 +260,11 @@ public class GameManager implements SpecialForceExecutor
      * If it was an invalid cell, or the cell was already revealed, throw an exception
      */
     private void handleAttack(Player defender, Cell coordinates) {
-        io.print(getOpponent(defender).getName() + " is attacking cell: "+coordinates.getX()+ ", "+coordinates.getY());
+
+        io.print(getOpponent(defender).getName()
+                + " is attacking cell: "
+                + coordinates.getX()
+                + ", "+coordinates.getY());
 
 
         AttackResult attackResult = defender.defend(coordinates);
