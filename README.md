@@ -173,8 +173,8 @@ After having a first working prototype, we merged dev into main.
 
     - logic  between cell and board so that they work together
     - coordinating  with the group overal working in a team
-    - managing the ship clas,ses 
-    - coming up with enough meth,ods for the project
+    - managing the ship clas,ses
+    - coming up with enough meth,ods for the Project
   
 
 ### Anastasiia Guliaeva (@kamikaros):
