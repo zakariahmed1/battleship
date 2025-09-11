@@ -142,6 +142,7 @@ src/main/java/application/App.java
 - Functional Programming & Streams: Used lambdas to implement functional interfaces, streams for concise code
 - Generic types / AAD and their implementations: Used Lists and Queue 
 - IO: Used Scanner class for IO via terminal (System.in/out)
+- Regex
 
 - Unit tests: JUnit for automatic tests
 - Generally code simplifying techniques like factorizing in methods, returns in loops, boolean conditions etc.

@@ -37,7 +37,9 @@ public class Cell {
     public boolean isAttacked() {
         return attacked;
     }
-
+    public boolean hasShip(Ship ship1){
+        return ship1 !=null;
+    }
     public void attack() {
         this.attacked = true;
         if (hasShip()) {
