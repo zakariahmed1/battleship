@@ -4,8 +4,6 @@ import application.entities.Ship;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Board {
 
@@ -13,11 +11,10 @@ public class Board {
     private final Cell[][] board;
     Random random = new Random();
 
-    private int max=9;
-   private  int min=1;
-   private  int randomX=min + (max - min) * random.nextInt();
-   private  int randomy=min + (max - min) *random.nextInt();
-
+    int max=9;
+    int min=1;
+    int randomX=min + (max - min) * random.nextInt();
+    int randomy=min + (max - min) *random.nextInt();
     Ship ship;
 
     ArrayList<Cell> coordinatesShip = new ArrayList<>();
@@ -30,30 +27,7 @@ public class Board {
                 board[i][j] = new Cell(j, i);}
         }
     }
-    //gives the approximate location of a random ship on the board
-    public String[][] aproximateLocation(){
-       int min = 1;
-       int max =3;
-       int randoml=min + (max - min) *random.nextInt();
-        String[][] visualization = new String[SIZE][SIZE];
-        Ship ship = ships.get(randoml);
-        for (int i = 0; i <= SIZE; i++){
-            for ( int j = 0; j<= SIZE;j++){
-                if(board[i][j].hasShip(ship)){
-                    visualization[i][j]="*";
-                    visualization[i+1][j+1]="*";//approximate coordinate
-                    visualization[i-1][j-1]="*";//approximate cooridnate
 
-                }
-                else{
-                    visualization[i][j]="-";//water
-                }
-
-            }
-
-        }
-        return visualization;
-    }
     public boolean placeShip(Ship ship) {
         ArrayList<Cell> coordinatesShip = new ArrayList<>();
         if (!isValidPlacement(ship)) {
@@ -116,22 +90,8 @@ public class Board {
             }
         }
     }
-    public void removeShip(Ship ship){
-        for (Cell cell :ship.getCoordinates()){
-            board[cell.y][cell.x].ship=null;
-        }
+    public void Timer(){
 
-    }
-
-    public void Timer(int time){
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("Timer expired! next turn ");
-                timer.cancel();
-            }
-        }, time);
     }
     // Visualize the board (return a matrix representation)
     public String[][] VisualizeBoard() {
@@ -186,7 +146,7 @@ public class Board {
 
         // Check bounds
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
-            //System.out.println("Invalid attack coordinates"); done in gamemanager
+            System.out.println("Invalid attack coordinates");
             return AttackResult.INVALID;
         }
 
@@ -194,7 +154,7 @@ public class Board {
 
         // Already attacked?
         if (target.isAttacked()) {
-            //System.out.println("This cell was already attacked"); done in gamemanager
+            System.out.println("This cell was already attacked");
             return AttackResult.ALREADY_ATTACKED;
         }
 
@@ -203,15 +163,16 @@ public class Board {
 
         if (target.hasShip()) {
             Ship ship = target.getShip();
+            ship.registerHit(cell);
 
             System.out.println("Hit!");
             if (ship.isSunk()) {
-                //System.out.println("Ship sunk!"); done in gamemanager
+                System.out.println("Ship sunk!");
                 return AttackResult.SUNK;
             }
             return AttackResult.HIT;
         } else {
-            //System.out.println("Miss!"); done in gamemanager
+            System.out.println("Miss!");
             return AttackResult.MISS;
         }
     }
