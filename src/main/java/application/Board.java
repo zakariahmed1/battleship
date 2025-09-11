@@ -160,7 +160,7 @@ public class Board {
 
         // Check bounds
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) {
-            System.out.println("Invalid attack coordinates");
+            //System.out.println("Invalid attack coordinates"); done in gamemanager
             return AttackResult.INVALID;
         }
 
@@ -168,7 +168,7 @@ public class Board {
 
         // Already attacked?
         if (target.isAttacked()) {
-            System.out.println("This cell was already attacked");
+            //System.out.println("This cell was already attacked"); done in gamemanager
             return AttackResult.ALREADY_ATTACKED;
         }
 
@@ -177,16 +177,15 @@ public class Board {
 
         if (target.hasShip()) {
             Ship ship = target.getShip();
-            ship.registerHit(cell);
 
             System.out.println("Hit!");
             if (ship.isSunk()) {
-                System.out.println("Ship sunk!");
+                //System.out.println("Ship sunk!"); done in gamemanager
                 return AttackResult.SUNK;
             }
             return AttackResult.HIT;
         } else {
-            System.out.println("Miss!");
+            //System.out.println("Miss!"); done in gamemanager
             return AttackResult.MISS;
         }
     }

@@ -142,6 +142,7 @@ src/main/java/application/App.java
 - Functional Programming & Streams: Used lambdas to implement functional interfaces, streams for concise code
 - Generic types / AAD and their implementations: Used Lists and Queue 
 - IO: Used Scanner class for IO via terminal (System.in/out)
+- Regex
 
 - Unit tests: JUnit for automatic tests
 - Generally code simplifying techniques like factorizing in methods, returns in loops, boolean conditions etc.
@@ -174,7 +175,10 @@ After having a first working prototype, we merged dev into main.
 
 ### Anastasiia Guliaeva (@kamikaros):
 
-    - lorem ipsum
+    - Developing a working game flow between the GameManager, Player, Board and Cell classes.
+    - Making sure the ship placement goes according to the rules of the game and doesn't overlap.
+    - Preventing invalid attacks inside the game.
+    - Maintaining the game state consistent (board update, hiding the enemy's board, etc).
 
 ### Philipp Vieider (@str0el):
 
