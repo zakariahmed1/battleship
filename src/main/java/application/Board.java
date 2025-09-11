@@ -13,10 +13,11 @@ public class Board {
     private final Cell[][] board;
     Random random = new Random();
 
-    int max=9;
-    int min=1;
-    int randomX=min + (max - min) * random.nextInt();
-    int randomy=min + (max - min) *random.nextInt();
+    private int max=9;
+   private  int min=1;
+   private  int randomX=min + (max - min) * random.nextInt();
+   private  int randomy=min + (max - min) *random.nextInt();
+
     Ship ship;
 
     ArrayList<Cell> coordinatesShip = new ArrayList<>();
@@ -29,7 +30,30 @@ public class Board {
                 board[i][j] = new Cell(j, i);}
         }
     }
+    //gives the approximate location of a random ship on the board
+    public String[][] aproximateLocation(){
+       int min = 1;
+       int max =3;
+       int randoml=min + (max - min) *random.nextInt();
+        String[][] visualization = new String[SIZE][SIZE];
+        Ship ship = ships.get(randoml);
+        for (int i = 0; i <= SIZE; i++){
+            for ( int j = 0; j<= SIZE;j++){
+                if(board[i][j].hasShip(ship)){
+                    visualization[i][j]="*";
+                    visualization[i+1][j+1]="*";//approximate coordinate
+                    visualization[i-1][j-1]="*";//approximate cooridnate
 
+                }
+                else{
+                    visualization[i][j]="-";//water
+                }
+
+            }
+
+        }
+        return visualization;
+    }
     public boolean placeShip(Ship ship) {
         ArrayList<Cell> coordinatesShip = new ArrayList<>();
         if (!isValidPlacement(ship)) {
@@ -98,6 +122,7 @@ public class Board {
         }
 
     }
+
     public void Timer(int time){
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
