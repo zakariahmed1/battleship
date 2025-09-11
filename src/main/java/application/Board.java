@@ -4,6 +4,8 @@ import application.entities.Ship;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Board {
 
@@ -90,8 +92,21 @@ public class Board {
             }
         }
     }
-    public void Timer(){
+    public void removeShip(Ship ship){
+        for (Cell cell :ship.getCoordinates()){
+            board[cell.y][cell.x].ship=null;
+        }
 
+    }
+    public void Timer(int time){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Timer expired! next turn ");
+                timer.cancel();
+            }
+        }, time);
     }
     // Visualize the board (return a matrix representation)
     public String[][] VisualizeBoard() {
